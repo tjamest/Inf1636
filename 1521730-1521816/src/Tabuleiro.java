@@ -23,27 +23,40 @@ public class Tabuleiro extends JPanel   {
 	public void paintComponent(Graphics g) {
 
     	super.paintComponent(g);
+    	Menu menu = new Menu();
+    	
+    	this.add(menu.b1);
+    	this.add(menu.b2);
+    	this.add(menu.b3);
+    	this.add(menu.b4);
+    	this.add(menu.turno);
     	
     	
     	Graphics2D g2d = (Graphics2D) g;
-    	
+    	Graphics2D dice = (Graphics2D) g;
+    	resp = TratadorBotao.getNumber();
+    	// paint(dice);
     	DrawBoard(g2d);
     	DrawRectangle(g2d);
-   
-    	 
+    	DrawDice(dice);
 
+	}
+
+	private void DrawDice(Graphics2D dice) {
+		
 		System.out.printf("valor tirado eh resp %d\n", resp); 
+		repaint();
 		 
-//		 if (resp!= 0) {
-//			 
-//			 dado = new ImageIcon(this.getClass().getResource(images[resp-1])).getImage();
-//			
-//			 g2d.drawImage(dado, 650, 290, null);
-//			 
-//		 }
+		 if (resp!= 0) {
+			 
+			 dado = new ImageIcon(this.getClass().getResource(images[resp-1])).getImage();
+			
+			 dice.drawImage(dado, 650, 290, null);
+			 
+ 
+		 }
 		
 		
-		 
 	}
 
 	private void DrawRectangle(Graphics2D g2d) {
@@ -59,6 +72,7 @@ public class Tabuleiro extends JPanel   {
 		      for(int col = 0; col < 12; col++) {       // For each square
 		    	  
 		    	  g2d.drawRect(row + row*50 , col+ col*50, 50, 50);
+		    	 
 		    	  
 		    	  //g2d.fill(new Rectangle2D.Float(0+row,0+col , 50, 50));
 		    	  
