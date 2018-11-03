@@ -1,10 +1,10 @@
-import java.awt.Font;
+import java.awt.*;
+import java.awt.geom.*;
+import javax.swing.*;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 
 public class Menu {
-	
+
 	//Botoes
 	static JButton b1 = new JButton("Novo Jogo");
 	static JButton b2 = new JButton("Carregar Jogo");
@@ -15,7 +15,7 @@ public class Menu {
 	static JLabel turno = new JLabel("À Jogar: ");
 	public static Font turno25 = new Font("Courier New", Font.BOLD, 25);
 	
-	public  Menu() {
+	public Menu() {
 		
 		ConfiguraSaveGame();
 		ConfiguraLoadGame();
@@ -24,6 +24,17 @@ public class Menu {
 		ConfiguraLabel();
 
 	}
+	
+//	public void paintComponent(Graphics g) {
+//
+//    	super.paintComponent(g);
+// 
+//    	Graphics2D g2d = (Graphics2D) g;
+//    	
+//    	
+//		System.out.printf("valor tirado eh resp %d\n", resp); 
+//
+//	}
 	
 	static void ConfiguraNewGame() {
 		b1.setBounds(620,50,150,50);
@@ -42,7 +53,7 @@ public class Menu {
 	}
 
 	static void ConfiguraLancaDado() {
-		b4.setBounds(620,390,150,50);
+		b4.setBounds(620,400,150,50);
 		b4.addActionListener(new TratadorBotao(b4));
 	
 	}
