@@ -3,10 +3,12 @@ import java.awt.geom.*;
 
 import javax.swing.*;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Tabuleiro extends JPanel   {
 	
-	private Image dado;
+	//private Image dado;
 	int resp = 0;
 	 
 	private static final long serialVersionUID = -4264416327199530488L;
@@ -18,7 +20,7 @@ public class Tabuleiro extends JPanel   {
 
 	
 
-	private String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
+	//private String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
 	
 
 	public Tabuleiro() {
@@ -26,14 +28,18 @@ public class Tabuleiro extends JPanel   {
     	setLayout(null);
         setBorder(BorderFactory.createLineBorder(Color.black));
         
-        Menu menu = new Menu();
+        new Menu();
         
         this.add(Menu.b1);
         this.add(Menu.b2);
         this.add(Menu.b3);
         this.add(Menu.b4);
         this.add(Menu.turno);
-
+        Menu.b1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		        addMouseListener(new Jogo());  	
+			}
+		});	
     }
 
 	public void paintComponent(Graphics g) {
@@ -46,24 +52,26 @@ public class Tabuleiro extends JPanel   {
     	DrawBoard(g2d);
     	DrawRectangle(g2d);
     	DrawQuadradosColoridos(g2d);
-    	DrawDados(test);
+       
+
+    	//DrawDados(test);
     	
 		//System.out.printf("valor tirado eh resp %d\n", resp); 
 
 	}
 
-	private void DrawDados(Graphics2D test) {
-		resp = TratadorBotao.getNumber();
-		
-		if (resp!= 0) {
-			 repaint();
-			 dado = new ImageIcon(this.getClass().getResource(images[resp-1])).getImage();
-			 test.drawImage(dado, 650, 290, null);
-			 
-	
-		 }
-
-	}
+//	private void DrawDados(Graphics2D test) {
+//		resp = TratadorBotao.getNumber();
+//		
+//		if (resp!= 0) {
+//			 repaint();
+//			 dado = new ImageIcon(this.getClass().getResource(images[resp-1])).getImage();
+//			 test.drawImage(dado, 650, 290, null);
+//			 
+//	
+//		 }
+//
+//	}
 
 	private void DrawRectangle(Graphics2D g2d) {
 		g2d.setColor(Color.GRAY);
@@ -166,7 +174,7 @@ public class Tabuleiro extends JPanel   {
 					   g2d.drawRect(b * 40, a * 40, 40, 40);
 				   }
 				   
-				   //g2d.drawRect(b * 40, a * 40, 40, 40);// tirar depois
+				   g2d.drawRect(b * 40, a * 40, 40, 40);// tirar depois
 
 			   }
 			}
@@ -186,7 +194,7 @@ public class Tabuleiro extends JPanel   {
 		int[] elipsesVermY = {40, 40, 160, 160};
 		
 		g2d.setColor(Tabuleiro.DARK_RED);
-		g2d.fillRect(0, 0, 240, 240);
+		//g2d.fillRect(0, 0, 240, 240);
 		g2d.setPaint(Color.BLACK);
 		g2d.drawRect(0, 0, 240, 240);
 		
@@ -199,7 +207,7 @@ public class Tabuleiro extends JPanel   {
 		}
 		
 		g2d.setColor(Tabuleiro.LIGHT_BLUE);
-		g2d.fillRect(0, 360, 240, 240);
+		//g2d.fillRect(0, 360, 240, 240);
 		g2d.setPaint(Color.BLACK);
 		g2d.drawRect(0, 360, 240, 240);
 		
@@ -216,7 +224,7 @@ public class Tabuleiro extends JPanel   {
 		
 	
 		g2d.setColor(Tabuleiro.DARK_GREEN);
-		g2d.fillRect(360, 0, 240, 240);
+		//g2d.fillRect(360, 0, 240, 240);
 		g2d.setPaint(Color.BLACK);
 		g2d.drawRect(360, 0, 240, 240);
 		
@@ -232,7 +240,7 @@ public class Tabuleiro extends JPanel   {
 		}
 		
 		g2d.setColor(Tabuleiro.DARK_YELLOW);
-		g2d.fillRect(360, 360, 240, 240);
+		//g2d.fillRect(360, 360, 240, 240);
 		g2d.setPaint(Color.BLACK);
 		g2d.drawRect(360, 360, 240, 240);
 		
@@ -249,6 +257,7 @@ public class Tabuleiro extends JPanel   {
 		
 	}
 
+	
 
 
 }

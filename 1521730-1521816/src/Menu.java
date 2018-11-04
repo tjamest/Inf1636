@@ -29,11 +29,8 @@ public class Menu {
 	static void ConfiguraNewGame() {
 		b1.setBounds(620,50,150,50);
 		
-		b1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new Jogo();
-			}
-		});	
+		
+		
 	}
 	static void ConfiguraLoadGame() {
 		 b2.setBounds(620,110,150,50);
