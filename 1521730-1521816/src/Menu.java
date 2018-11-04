@@ -1,7 +1,5 @@
 import java.awt.*;
-import java.awt.geom.*;
 import javax.swing.*;
-
 
 public class Menu {
 
@@ -24,18 +22,7 @@ public class Menu {
 		ConfiguraLabel();
 
 	}
-	
-//	public void paintComponent(Graphics g) {
-//
-//    	super.paintComponent(g);
-// 
-//    	Graphics2D g2d = (Graphics2D) g;
-//    	
-//    	
-//		System.out.printf("valor tirado eh resp %d\n", resp); 
-//
-//	}
-	
+
 	static void ConfiguraNewGame() {
 		b1.setBounds(620,50,150,50);
 	}
