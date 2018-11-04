@@ -118,7 +118,7 @@ public class Tabuleiro extends JPanel   {
 					   int[][] arrayY = {{250, 270, 260}, {50, 50, 70} };
 					   fazTriangulo(arrayX[0], arrayY[0], Color.WHITE, g2d);
 					   fazTriangulo(arrayX[1], arrayY[1], Color.WHITE, g2d);
-					   fazTriangulo(arrayX[2], arrayY[2], Color.WHITE, g2d);
+					  // fazTriangulo(arrayX[2], arrayY[2], Color.WHITE, g2d);
 					   
 					   
 					   
