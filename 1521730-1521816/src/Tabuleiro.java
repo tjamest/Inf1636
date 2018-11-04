@@ -110,9 +110,15 @@ public class Tabuleiro extends JPanel   {
 					   
 					   g2d.fillRect(b * 40, a * 40, 40, 40);
 					   
-//					   int[][] arrayX = {{40, 40, 100}};
-//					   int[][] arrayY = {{240, 280, 100}};
-//					   fazTriangulo(arrayX[0], arrayY[0], Color.WHITE, g2d);
+//					   int[] x = new int[]{60,60,70};
+//					   int[] y = new int[]{60,260,70};
+//					   g2d.drawPolygon (x, y, x.length);  
+////					   
+					   int[][] arrayX = {{50, 50, 70}, {330, 350, 340}};
+					   int[][] arrayY = {{250, 270, 260}, {50, 50, 70} };
+					   fazTriangulo(arrayX[0], arrayY[0], Color.WHITE, g2d);
+					   fazTriangulo(arrayX[1], arrayY[1], Color.WHITE, g2d);
+					   fazTriangulo(arrayX[2], arrayY[2], Color.WHITE, g2d);
 					   
 					   
 					   
@@ -120,8 +126,6 @@ public class Tabuleiro extends JPanel   {
 					   
 					   
 				   }
-				   
-				   
 				   
 				   else if ((a == 7 && b >=1 && b<=5) || ( a >=1 && a<=5 && b == 7) 
 						   
