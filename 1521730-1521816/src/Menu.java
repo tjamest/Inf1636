@@ -1,10 +1,11 @@
-import java.awt.Font;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 public class Menu {
-	
+
 	//Botoes
 	static JButton b1 = new JButton("Novo Jogo");
 	static JButton b2 = new JButton("Carregar Jogo");
@@ -15,7 +16,7 @@ public class Menu {
 	static JLabel turno = new JLabel("À Jogar: ");
 	public static Font turno25 = new Font("Courier New", Font.BOLD, 25);
 	
-	public  Menu() {
+	public Menu() {
 		
 		ConfiguraSaveGame();
 		ConfiguraLoadGame();
@@ -24,9 +25,15 @@ public class Menu {
 		ConfiguraLabel();
 
 	}
-	
+
 	static void ConfiguraNewGame() {
 		b1.setBounds(620,50,150,50);
+		
+		b1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Jogo();
+			}
+		});	
 	}
 	static void ConfiguraLoadGame() {
 		 b2.setBounds(620,110,150,50);
@@ -42,8 +49,9 @@ public class Menu {
 	}
 
 	static void ConfiguraLancaDado() {
-		b4.setBounds(620,390,150,50);
+		b4.setBounds(620,400,150,50);
 		b4.addActionListener(new TratadorBotao(b4));
+		b4.setEnabled(false);
 	
 	}
 
