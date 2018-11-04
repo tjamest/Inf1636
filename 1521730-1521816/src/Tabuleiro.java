@@ -14,6 +14,7 @@ public class Tabuleiro extends JPanel   {
 	private static final long serialVersionUID = -4264416327199530488L;
 
 	private String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
+	private int[][] arrayPontosX;
 
 	public Tabuleiro() {
 		
@@ -71,27 +72,53 @@ public class Tabuleiro extends JPanel   {
 	}
 
 	private void DrawBoard(Graphics2D g2d) {
+		
+		
 		for(int a = 0; a < 15; a++){
 			   for(int b = 0; b < 15; b++){
-				   //set cor para quadrados coloridos
-				   if(b>5 && b < 9) {
+				   
+				   
+				   
+				   if(b>5 && b < 9) { //set cor para quadrados coloridos
 					   if(a<=5) {
+						   
 						   g2d.setColor(Color.green);
-					   }else if(a>8) {
-						   g2d.setColor(Color.blue);
+						   
 					   }
-				   }else if(b<=5){
+					   else if(a>8) {
+						   
+						   g2d.setColor(Color.blue);
+						   
+					   }
+					   
+				   	}
+				   
+				   else if(b<=5){
+					   
 					   g2d.setColor(Color.red);
-				   }else if(b>8) {
+					   
+				   }
+				   else if(b>8) {
+					   
 					   g2d.setColor(Color.yellow);
+					   
 				   }
 				   
 				   if ((a == 6 && b == 1) || (a == 1 && b == 8) ||  (a == 8 && b == 13) 
 						   
 						   ||  (a == 13 && b == 6)) { //primeiro quadrado colorido
 					   
-					   
 					   g2d.fillRect(b * 40, a * 40, 40, 40);
+					   
+//					   int[][] arrayX = {{40, 40, 100}};
+//					   int[][] arrayY = {{240, 280, 100}};
+//					   fazTriangulo(arrayX[0], arrayY[0], Color.WHITE, g2d);
+					   
+					   
+					   
+					   
+					   
+					   
 				   }
 				   
 				   
@@ -113,24 +140,18 @@ public class Tabuleiro extends JPanel   {
 				   }
 				
 				   else if (a >= 6 && a <=8 && b >= 6 && b <=8 ) { //aonde vao ficar os triangulos
-					   
-					   
-//					   
-//					   g2d.setColor(Color.red);
-//					   
-//					  
-//					   
-//					   
-//					   g2d.setColor(Color.green);
-//					   
-//					   g2d.setColor(Color.blue);
-//					   
-//					   g2d.setColor(Color.yellow);
-//					   
-//					   g2d.setColor(Color.black);
-//					  // g2d.fillRect(b * 40, a * 40, 40, 40);
-					   
-					   
+
+					   int[][] arrayX = {{240, 240, 300}, {360, 360, 300}, {240, 360, 300}, {240, 360, 300}};
+					   int[][] arrayY = {{240, 360, 300}, {240, 360, 300}, {360, 360, 300}, {240, 240, 300}};
+						
+						fazTriangulo(arrayX[0], arrayY[0], Color.RED, g2d);
+						fazTriangulo(arrayX[1], arrayY[1], Color.YELLOW, g2d);
+						fazTriangulo(arrayX[2], arrayY[2], Color.BLUE, g2d);
+						fazTriangulo(arrayX[3], arrayY[3], Color.GREEN, g2d);
+						
+						g2d.setPaint(Color.BLACK);
+						g2d.drawRect(240, 240, 120, 120);
+
 					   
 				   }
 	
@@ -149,18 +170,79 @@ public class Tabuleiro extends JPanel   {
 	
 	}
 	
+	void fazTriangulo(int[] arrayX , int[] arrayY, Color cor, Graphics2D g2d) {
+		g2d.setPaint(Color.BLACK);
+		g2d.drawPolygon(arrayX, arrayY, 3);
+		g2d.setPaint(cor);
+		g2d.fillPolygon(arrayX, arrayY, 3);
+	}
+	
 	private void DrawQuadradosColoridos(Graphics2D g2d) {
+		
+		int[] elipsesVermX = {30, 150, 30, 150};
+		int[] elipsesVermY = {30, 30, 150, 150};
+		
 		g2d.setColor(Color.RED);
 		g2d.fillRect(0, 0, 240, 240);
+		g2d.setPaint(Color.BLACK);
+		g2d.drawRect(0, 0, 240, 240);
 		
-		g2d.setColor(Color.green);
-		g2d.fillRect(360, 0, 240, 240);
+		for (int i = 0; i < 4 ; i ++) {		
+			 g2d.setPaint(Color.WHITE);
+		     g2d.fill(new Ellipse2D.Double(elipsesVermX[i],elipsesVermY[i], 50, 50));
+		     g2d.setPaint(Color.BLACK);
+		     g2d.draw(new Ellipse2D.Double(elipsesVermX[i],elipsesVermY[i], 50, 50));
+	
+		}
 		
 		g2d.setColor(Color.BLUE);
 		g2d.fillRect(0, 360, 240, 240);
+		g2d.setPaint(Color.BLACK);
+		g2d.drawRect(0, 360, 240, 240);
+		
+		int[] elipsesAzulX = {30, 150, 30, 150};
+		int[] elipsesAzulY = {390, 390, 510, 510};
+		
+		for (int i = 0; i < 4 ; i ++) {		
+			 g2d.setPaint(Color.WHITE);
+		     g2d.fill(new Ellipse2D.Double(elipsesAzulX[i],elipsesAzulY[i], 50, 50));
+		     g2d.setPaint(Color.BLACK);
+		     g2d.draw(new Ellipse2D.Double(elipsesAzulX[i],elipsesAzulY[i], 50, 50));
+	
+		}
+		
+	
+		g2d.setColor(Color.green);
+		g2d.fillRect(360, 0, 240, 240);
+		g2d.setPaint(Color.BLACK);
+		g2d.drawRect(360, 0, 240, 240);
+		
+		int[] elipsesVerdeX = {390, 510, 390, 510};
+		int[] elipsesVerdeY = {30, 30, 150, 150};
+		
+		for (int i = 0; i < 4 ; i ++) {		
+			 g2d.setPaint(Color.WHITE);
+		     g2d.fill(new Ellipse2D.Double(elipsesVerdeX[i],elipsesVerdeY[i], 50, 50));
+		     g2d.setPaint(Color.BLACK);
+		     g2d.draw(new Ellipse2D.Double(elipsesVerdeX[i],elipsesVerdeY[i], 50, 50));
+	
+		}
 		
 		g2d.setColor(Color.YELLOW);
 		g2d.fillRect(360, 360, 240, 240);
+		g2d.setPaint(Color.BLACK);
+		g2d.drawRect(360, 360, 240, 240);
+		
+		int[] elipsesAmaX = {390, 510, 390, 510};
+		int[] elipsesAmaY = {390, 390, 510, 510};
+		
+		for (int i = 0; i < 4 ; i ++) {		
+			 g2d.setPaint(Color.WHITE);
+		     g2d.fill(new Ellipse2D.Double(elipsesAmaX[i],elipsesAmaY[i], 50, 50));
+		     g2d.setPaint(Color.BLACK);
+		     g2d.draw(new Ellipse2D.Double(elipsesAmaX[i],elipsesAmaY[i], 50, 50));
+	
+		}
 		
 	}
 

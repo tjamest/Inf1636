@@ -58,7 +58,7 @@ public class Main extends JFrame {
 	
 
 	static void ConfiguraFrame() {
-		frame.setSize(800, 600);
+		frame.setSize(800, 640);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
