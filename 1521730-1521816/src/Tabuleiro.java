@@ -1,13 +1,16 @@
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.Vector;
 
 import javax.swing.*;
-import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Tabuleiro extends JPanel   {
 	
-	private Image dado;
+	//private Image dado;
 	int resp = 0;
+	static Graphics2D g2d;
 	 
 	private static final long serialVersionUID = -4264416327199530488L;
 	
@@ -15,10 +18,28 @@ public class Tabuleiro extends JPanel   {
 	public static  Color DARK_YELLOW = new Color(255,204,51);
 	public static  Color DARK_GREEN = new Color(0, 204, 0);
 	public static  Color DARK_RED = new Color(204, 0, 0);
-
+	
+	//vetor de pecas
+	private Vector<Peao> pecasVerm = new Vector<Peao>();
+	private Vector<Peao> pecasAzul = new Vector<Peao>();
+	private Vector<Peao> pecasVerde = new Vector<Peao>();
+	private Vector<Peao> pecasAma = new Vector<Peao>();
+	
+	
+	//posicoes iniciais pino (assim que dá new game)
+	static int[][] pinoIniVerm = {{50, 50}, {170, 50}, {50, 170}, {170, 170}};
+	static int[][] pinoIniAzul = {{50, 410}, {170, 410}, {50, 530}, {170, 530}};
+	static int[][] pinoIniVerde = {{410, 50}, {530, 50}, {410, 170}, {530, 170}};
+	static int[][] pinoIniAmar = {{410, 410}, {530, 410}, {410, 530}, {530, 530}};
+	
+	//posicoes elipses 
+	static int[][] elipsesVerm = {{40, 40}, {160, 40}, {40, 160}, {160, 160}};
+	static int[][] elipsesAzul = {{40, 400}, {160, 400}, {40, 520}, {160, 520}};
+	static int[][] elipsesVerde = {{400, 40}, {520, 40}, {400, 160}, {520, 160}};
+	static int[][] elipsesAma = {{400, 400}, {520, 400}, {400, 520}, {520, 520}};
 	
 
-	private String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
+	//private String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
 	
 
 	public Tabuleiro() {
@@ -26,51 +47,69 @@ public class Tabuleiro extends JPanel   {
     	setLayout(null);
         setBorder(BorderFactory.createLineBorder(Color.black));
         
-        Menu menu = new Menu();
+        new Menu();
         
         this.add(Menu.b1);
         this.add(Menu.b2);
         this.add(Menu.b3);
         this.add(Menu.b4);
         this.add(Menu.turno);
+        
+        Menu.b1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+		        addMouseListener(new Jogo());  //mouse
+		        repaint();  
+//		        while(true) {
+//		        	
+//		        }
 
+			}
+		});	
     }
 
 	public void paintComponent(Graphics g) {
 
     	super.paintComponent(g);
  
-    	Graphics2D g2d = (Graphics2D) g;
-    	Graphics2D test = (Graphics2D) g;
+    	g2d = (Graphics2D) g;
+    	//Graphics2D test = (Graphics2D) g;
     	
     	DrawBoard(g2d);
     	DrawRectangle(g2d);
     	DrawQuadradosColoridos(g2d);
-    	DrawDados(test);
-    	
-		//System.out.printf("valor tirado eh resp %d\n", resp); 
+ 
+    	if (Jogo.newgame == true) {
+    		
+    		iniciaVetorPecas();
+    		desenhaPinos();
 
+    	}
 	}
 
-	private void DrawDados(Graphics2D test) {
-		resp = TratadorBotao.getNumber();
+
+	private void desenhaPinos() {
+		for (int i = 0; i < 4 ; i ++) {	
+			
+			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Tabuleiro.DARK_RED);
+			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Tabuleiro.LIGHT_BLUE);
+			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Tabuleiro.DARK_GREEN);
+			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Tabuleiro.DARK_YELLOW);	
+		}
+	}
+
+	private void iniciaVetorPecas() {
 		
-		if (resp!= 0) {
-			 repaint();
-			 dado = new ImageIcon(this.getClass().getResource(images[resp-1])).getImage();
-			 test.drawImage(dado, 650, 290, null);
-			 
+		for (int i = 0; i < 4 ; i ++){
+			pecasVerm.add(new Peao(Tabuleiro.DARK_RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i));
+			pecasAzul.add(new Peao(Tabuleiro.LIGHT_BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i));
+			pecasVerde.add(new Peao(Tabuleiro.DARK_GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i));
+			pecasAma.add(new Peao(Tabuleiro.DARK_YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i));
+		}
+	}
+
+
 	
-		 }
-
-	}
-
-	private void DrawRectangle(Graphics2D g2d) {
-		g2d.setColor(Color.GRAY);
-		g2d.fill(new Rectangle2D.Double(600, 0, 200, 600));
-		
-	}
-
 	private void DrawBoard(Graphics2D g2d) {
 		
 		
@@ -117,10 +156,10 @@ public class Tabuleiro extends JPanel   {
 					   int[][] arrayY = {{250, 270, 260}, {50, 50, 70}, {330, 350, 340}, {550, 550, 530} };
 					   
 					   
-					   fazTriangulo(arrayX[0], arrayY[0], Color.WHITE, g2d);
-					   fazTriangulo(arrayX[1], arrayY[1], Color.WHITE, g2d);
-					   fazTriangulo(arrayX[2], arrayY[2], Color.WHITE, g2d);
-					   fazTriangulo(arrayX[3], arrayY[3], Color.WHITE, g2d);
+					   DrawTriangulo(arrayX[0], arrayY[0], Color.WHITE, g2d);
+					   DrawTriangulo(arrayX[1], arrayY[1], Color.WHITE, g2d);
+					   DrawTriangulo(arrayX[2], arrayY[2], Color.WHITE, g2d);
+					   DrawTriangulo(arrayX[3], arrayY[3], Color.WHITE, g2d);
   
 				   }
 				   
@@ -149,10 +188,10 @@ public class Tabuleiro extends JPanel   {
 					   int[][] arrayX = {{240, 240, 300}, {360, 360, 300}, {240, 360, 300}, {240, 360, 300}};
 					   int[][] arrayY = {{240, 360, 300}, {240, 360, 300}, {360, 360, 300}, {240, 240, 300}};
 						
-						fazTriangulo(arrayX[0], arrayY[0], Tabuleiro.DARK_RED, g2d);
-						fazTriangulo(arrayX[1], arrayY[1], Tabuleiro.DARK_YELLOW, g2d);
-						fazTriangulo(arrayX[2], arrayY[2], Tabuleiro.LIGHT_BLUE, g2d);
-						fazTriangulo(arrayX[3], arrayY[3], Tabuleiro.DARK_GREEN, g2d);
+					   DrawTriangulo(arrayX[0], arrayY[0], Tabuleiro.DARK_RED, g2d);
+					   DrawTriangulo(arrayX[1], arrayY[1], Tabuleiro.DARK_YELLOW, g2d);
+					   DrawTriangulo(arrayX[2], arrayY[2], Tabuleiro.LIGHT_BLUE, g2d);
+					   DrawTriangulo(arrayX[3], arrayY[3], Tabuleiro.DARK_GREEN, g2d);
 						
 						g2d.setPaint(Color.BLACK);
 						g2d.drawRect(240, 240, 120, 120);
@@ -166,89 +205,91 @@ public class Tabuleiro extends JPanel   {
 					   g2d.drawRect(b * 40, a * 40, 40, 40);
 				   }
 				   
-				   //g2d.drawRect(b * 40, a * 40, 40, 40);// tirar depois
+				   g2d.drawRect(b * 40, a * 40, 40, 40);// tirar depois
 
 			   }
 			}
 	
 	}
 	
-	void fazTriangulo(int[] arrayX , int[] arrayY, Color cor, Graphics2D g2d) {
+	static void DrawPino(Graphics2D g2d, int x, int y, Color cor) {
+
+		 g2d.setPaint(cor);
+		 g2d.fill(new Ellipse2D.Double(x,y, 20, 20));
+	     g2d.setPaint(cor);
+	     g2d.draw(new Ellipse2D.Double(x,y, 20, 20));
+
+	}
+	
+	static void DrawQuadrado(Graphics2D g2d, int x, int y, Color cor) {
+		
+		g2d.setColor(cor);
+		g2d.fillRect(x, y, 240, 240);
 		g2d.setPaint(Color.BLACK);
-		g2d.drawPolygon(arrayX, arrayY, 3);
-		g2d.setPaint(cor);
-		g2d.fillPolygon(arrayX, arrayY, 3);
+		g2d.drawRect(x, y, 240, 240);
+		
 	}
 	
 	private void DrawQuadradosColoridos(Graphics2D g2d) {
 		
-		int[] elipsesVermX = {40, 160, 40, 160};
-		int[] elipsesVermY = {40, 40, 160, 160};
-		
-		g2d.setColor(Tabuleiro.DARK_RED);
-		g2d.fillRect(0, 0, 240, 240);
-		g2d.setPaint(Color.BLACK);
-		g2d.drawRect(0, 0, 240, 240);
-		
+		DrawQuadrado(g2d, 0, 0, Tabuleiro.DARK_RED);
+		DrawQuadrado(g2d, 0, 360, Tabuleiro.LIGHT_BLUE);
+		DrawQuadrado(g2d, 360, 0, Tabuleiro.DARK_GREEN);
+		DrawQuadrado(g2d, 360, 360, Tabuleiro.DARK_YELLOW);
+
 		for (int i = 0; i < 4 ; i ++) {		
-			 g2d.setPaint(Color.WHITE);
-		     g2d.fill(new Ellipse2D.Double(elipsesVermX[i],elipsesVermY[i], 40, 40));
-		     g2d.setPaint(Color.BLACK);
-		     g2d.draw(new Ellipse2D.Double(elipsesVermX[i],elipsesVermY[i], 40, 40));
+			
+			DrawElipse(g2d, elipsesVerm[i][0], elipsesVerm[i][1], Tabuleiro.DARK_RED);
+			DrawElipse(g2d, elipsesAzul[i][0], elipsesAzul[i][1], Tabuleiro.LIGHT_BLUE);
+			DrawElipse(g2d, elipsesVerde[i][0], elipsesVerde[i][1], Tabuleiro.DARK_GREEN);
+			DrawElipse(g2d, elipsesAma[i][0], elipsesAma[i][1], Tabuleiro.DARK_YELLOW);
+
+		}	
+	}
 	
-		}
+	private void DrawElipse(Graphics2D g2d, int x, int y, Color cor) {
 		
-		g2d.setColor(Tabuleiro.LIGHT_BLUE);
-		g2d.fillRect(0, 360, 240, 240);
+		 g2d.setPaint(Color.WHITE);
+	     g2d.fill(new Ellipse2D.Double(x,y, 40, 40));
+	     g2d.setPaint(cor);
+	     g2d.draw(new Ellipse2D.Double(x,y, 40, 40));
+	     
+	}
+	
+	private void DrawTriangulo(int[] arrayX , int[] arrayY, Color cor, Graphics2D g2d) {
+		
 		g2d.setPaint(Color.BLACK);
-		g2d.drawRect(0, 360, 240, 240);
-		
-		int[] elipsesAzulX = {40, 160, 40, 160};
-		int[] elipsesAzulY = {400, 400, 520, 520};
-		
-		for (int i = 0; i < 4 ; i ++) {		
-			 g2d.setPaint(Color.WHITE);
-		     g2d.fill(new Ellipse2D.Double(elipsesAzulX[i],elipsesAzulY[i], 40, 40));
-		     g2d.setPaint(Color.BLACK);
-		     g2d.draw(new Ellipse2D.Double(elipsesAzulX[i],elipsesAzulY[i], 40, 40));
-	
-		}
-		
-	
-		g2d.setColor(Tabuleiro.DARK_GREEN);
-		g2d.fillRect(360, 0, 240, 240);
-		g2d.setPaint(Color.BLACK);
-		g2d.drawRect(360, 0, 240, 240);
-		
-		int[] elipsesVerdeX = {400, 520, 400, 520};
-		int[] elipsesVerdeY = {40, 40, 160, 160};
-		
-		for (int i = 0; i < 4 ; i ++) {		
-			 g2d.setPaint(Color.WHITE);
-			 g2d.fill(new Ellipse2D.Double(elipsesVerdeX[i],elipsesVerdeY[i], 40, 40));
-		     g2d.setPaint(Color.BLACK);
-		     g2d.draw(new Ellipse2D.Double(elipsesVerdeX[i],elipsesVerdeY[i], 40, 40));
-	
-		}
-		
-		g2d.setColor(Tabuleiro.DARK_YELLOW);
-		g2d.fillRect(360, 360, 240, 240);
-		g2d.setPaint(Color.BLACK);
-		g2d.drawRect(360, 360, 240, 240);
-		
-		int[] elipsesAmaX = {400, 520, 400, 520};
-		int[] elipsesAmaY = {400, 400, 520, 520};
-		
-		for (int i = 0; i < 4 ; i ++) {		
-			 g2d.setPaint(Color.WHITE);
-			 g2d.fill(new Ellipse2D.Double(elipsesAmaX[i],elipsesAmaY[i], 40, 40));
-		     g2d.setPaint(Color.BLACK);
-		     g2d.draw(new Ellipse2D.Double(elipsesAmaX[i],elipsesAmaY[i], 40, 40));
-	
-		}
+		g2d.drawPolygon(arrayX, arrayY, 3);
+		g2d.setPaint(cor);
+		g2d.fillPolygon(arrayX, arrayY, 3);
 		
 	}
+	
+	private void DrawRectangle(Graphics2D g2d) {
+		
+		g2d.setColor(Color.GRAY);
+		g2d.fill(new Rectangle2D.Double(600, 0, 200, 600));
+		
+	}
+	
 
+//DrawDados(test);
+//System.out.printf("valor tirado eh resp %d\n", resp);
+	
+//	private void DrawDados(Graphics2D test) {
+//		resp = TratadorBotao.getNumber();
+//		
+//		if (resp!= 0) {
+//			 repaint();
+//			 dado = new ImageIcon(this.getClass().getResource(images[resp-1])).getImage();
+//			 test.drawImage(dado, 650, 290, null);
+//			 
+//	
+//		 }
+//
+//	}
+
+	
 
 
 }
