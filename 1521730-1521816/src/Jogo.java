@@ -1,19 +1,25 @@
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Vector;
 
 
 public class Jogo implements MouseListener {
 	
 	public static boolean newgame = false;
-	public static String [][]confereMov= new String [15][15];
+	public static int [][]posicoes= new int[15][15];
+	public boolean  selecionado = false;
+	public static Color cor;
+	int ind;
 	
 	public Jogo() {
 		
 		Menu.b3.setEnabled(true);
 		Menu.b4.setEnabled(true);
 		confereMovimento();
-		//printConfereMovimento();
 		newgame = true;
+		//printConfereMovimento();
+		
 	}
 	
 //Vetor que confere se casa esta livre ou nao	
@@ -23,35 +29,18 @@ public void confereMovimento() {
 		for (int i = 0 ; i<15; i++) {
 			for (int j = 0 ; j<15 ; j++) {
 				
-				confereMov[i][j] = "Null";
+				posicoes[i][j] = -1;
 				
-				if ((i == 1) && (j == 1 ||  j == 4 ) || (i== 4) && (j == 1 ||  j == 4 ) ){
-					confereMov[i][j] = "Color.red";
-				}
-				
-				else if ((i == 1) && (j == 10 ||  j == 13 ) ||(i == 4) && (j == 10 || j==13)) {
-					confereMov[i][j] = "Color.green";
-				}
-				
-				else if ((i == 10) && (j == 1 ||  j == 4 ) || (i== 13) && (j == 1 ||  j == 4 ) ){
-					confereMov[i][j] = "Color.blue";
-				}
-
-				else if ((i == 10) && (j == 10 ||  j == 13 ) ||(i == 13) && (j == 10 || j==13)) {
-					confereMov[i][j] = "Color.yellow";
-				}
-
 			}
-		}
-		
-	}
+		}		
+}
 	
-public void printConfereMovimento() {
+public static void printConfereMovimento() {
 		
 		for (int i = 0 ; i<15; i++) {
 			for (int j = 0 ; j<15 ; j++) {
 				
-				System.out.printf("indice matriz eh [%d][%d] = %s \n" ,i, j , confereMov[i][j]);
+				System.out.printf("indice matriz eh [%d][%d] = %d \n" ,i, j , posicoes[i][j]);
 
 				
 			}
@@ -63,13 +52,13 @@ public void printConfereMovimento() {
 	
 public void confereMatrix(int x, int y) {
 	
-	if (confereMov[x][y] == "Null") {
+	if (posicoes[x][y] == -1) {
 		System.out.printf("Pode mover\n");
 		
 		
 	}
 	
-	else if (confereMov[x][y] != "Null") {
+	else{
 		
 
 		System.out.printf("Casa ocupada \n");
@@ -83,6 +72,7 @@ public void confereMatrix(int x, int y) {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	
+		
 		int x;
 		int y;
 		
@@ -90,6 +80,88 @@ public void confereMatrix(int x, int y) {
 		y = (int) Math.ceil(e.getY()/40);
 		
 		System.out.printf("Casa posicao x = %d y = %d \n ", x, y );
+		
+		if (selecionado == false ) {
+			
+			for (int i =0 ; i< 4; i++) {
+				
+				if ((int)Math.ceil(Tabuleiro.pecasVerm.elementAt(i).CoordX/40) == x 
+						&& (int)Math.ceil(Tabuleiro.pecasVerm.elementAt(i).CoordY/40)== y){
+					
+					ind = i;
+					System.out.printf("Peca selecionada = %d\n", ind);
+					selecionado = true;
+					cor = Tabuleiro.DARK_RED;
+					break;
+					
+					
+				}
+				
+				else if ((int)Math.ceil(Tabuleiro.pecasAzul.elementAt(i).CoordX/40) == x 
+						&& (int)Math.ceil(Tabuleiro.pecasAzul.elementAt(i).CoordY/40)== y){
+					
+					ind = i;
+					System.out.printf("Peca selecionada = %d\n", ind);
+					selecionado = true;
+					cor = Tabuleiro.LIGHT_BLUE;
+					break;
+					
+					
+				}
+				
+				else if ((int)Math.ceil(Tabuleiro.pecasVerde.elementAt(i).CoordX/40) == x 
+						&& (int)Math.ceil(Tabuleiro.pecasVerde.elementAt(i).CoordY/40)== y){
+					
+					ind = i;
+					System.out.printf("Peca selecionada = %d\n", ind);
+					selecionado = true;
+					cor = Tabuleiro.DARK_GREEN;
+					break;
+					
+					
+				}
+				
+				else if ((int)Math.ceil(Tabuleiro.pecasAma.elementAt(i).CoordX/40) == x 
+						&& (int)Math.ceil(Tabuleiro.pecasAma.elementAt(i).CoordY/40)== y){
+					
+					ind = i;
+					System.out.printf("Peca selecionada = %d\n", ind);
+					selecionado = true;
+					cor = Tabuleiro.DARK_YELLOW;
+					break;
+					
+					
+				}	
+			}
+		}
+		else if (selecionado != false) {
+			
+			System.out.printf("selecionado = %s\n", selecionado);
+			
+			if (cor == Tabuleiro.DARK_RED ) {
+				Tabuleiro.movepeca(Tabuleiro.pecasVerm, x, y, ind);
+				
+			}
+			else if (cor == Tabuleiro.LIGHT_BLUE) {
+				Tabuleiro.movepeca(Tabuleiro.pecasAzul, x, y, ind);
+				
+			}
+			else if (cor == Tabuleiro.DARK_GREEN) {
+				Tabuleiro.movepeca(Tabuleiro.pecasVerde, x, y, ind);
+				
+			}
+			else {
+				Tabuleiro.movepeca(Tabuleiro.pecasAma, x, y, ind);
+			}
+			
+			//Tabuleiro.movepeca(Tabuleiro.pecasVerm, x, y, ind);
+			selecionado = false;
+			cor = Color.BLACK;
+			
+		}
+	
+		//Tabuleiro.movepeca(Tabuleiro.pecasVerm, x, y, 0);
+			
 
 		//System.out.println("mouse na posição x=" + e.getX() + " y=" + e.getY()); 
 			

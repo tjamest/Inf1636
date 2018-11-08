@@ -23,7 +23,6 @@ public class Main extends JFrame {
 		//frame.setSize(800, 640); //windows
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-			
+	
 	}
 }

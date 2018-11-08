@@ -11,6 +11,8 @@ public class Tabuleiro extends JPanel   {
 	//private Image dado;
 	int resp = 0;
 	static Graphics2D g2d;
+	
+	private int turno;
 	 
 	private static final long serialVersionUID = -4264416327199530488L;
 	
@@ -20,10 +22,10 @@ public class Tabuleiro extends JPanel   {
 	public static  Color DARK_RED = new Color(204, 0, 0);
 	
 	//vetor de pecas
-	private Vector<Peao> pecasVerm = new Vector<Peao>();
-	private Vector<Peao> pecasAzul = new Vector<Peao>();
-	private Vector<Peao> pecasVerde = new Vector<Peao>();
-	private Vector<Peao> pecasAma = new Vector<Peao>();
+	static  Vector<Peao> pecasVerm = new Vector<Peao>();
+	static Vector<Peao> pecasAzul = new Vector<Peao>();
+	static Vector<Peao> pecasVerde = new Vector<Peao>();
+	static Vector<Peao> pecasAma = new Vector<Peao>();
 	
 	
 	//posicoes iniciais pino (assim que dá new game)
@@ -43,6 +45,8 @@ public class Tabuleiro extends JPanel   {
 	
 
 	public Tabuleiro() {
+		
+		turno = 0;
 		
     	setLayout(null);
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -69,9 +73,11 @@ public class Tabuleiro extends JPanel   {
     }
 
 	public void paintComponent(Graphics g) {
+		
+		repaint();
 
     	super.paintComponent(g);
- 
+    	
     	g2d = (Graphics2D) g;
     	//Graphics2D test = (Graphics2D) g;
     	
@@ -85,26 +91,61 @@ public class Tabuleiro extends JPanel   {
     		desenhaPinos();
 
     	}
+    	
+//    	System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
+//    	Jogo.printConfereMovimento();
 	}
 
 
-	private void desenhaPinos() {
+	private static void desenhaPinos() {
 		for (int i = 0; i < 4 ; i ++) {	
 			
-			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Tabuleiro.DARK_RED);
-			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Tabuleiro.LIGHT_BLUE);
-			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Tabuleiro.DARK_GREEN);
-			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Tabuleiro.DARK_YELLOW);	
+			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED);
+			Jogo.posicoes[(int) Math.ceil(pecasVerm.elementAt(i).CoordX/40)][(int) Math.ceil(pecasVerm.elementAt(i).CoordY/40)] = i;
+			
+			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE);
+			Jogo.posicoes[(int) Math.ceil(pecasAzul.elementAt(i).CoordX/40)][(int) Math.ceil(pecasAzul.elementAt(i).CoordY/40)] = i;
+			
+			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN);
+			Jogo.posicoes[(int) Math.ceil(pecasVerde.elementAt(i).CoordX/40)][(int) Math.ceil(pecasVerde.elementAt(i).CoordY/40)] = i;
+			
+			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW);	
+			Jogo.posicoes[(int) Math.ceil(pecasAma.elementAt(i).CoordY/40)][(int) Math.ceil(pecasAma.elementAt(i).CoordY/40)] = i;
 		}
+		//System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
+		
 	}
+	
+	public static void movepeca(Vector<Peao> peca, int x, int y, int index ) {
+		
+		int oldX = (int) Math.ceil(peca.elementAt(index).CoordX/40);
+		int oldY = (int) Math.ceil(peca.elementAt(index).CoordY/40);
+		
+		peca.elementAt(index).CoordX = (x * 40) + 10;
+		peca.elementAt(index).CoordY = (y * 40) + 10;
+		
+		//System.out.printf(" X = %d Y = %d\n", );
+		
+		
+		
+		Jogo.posicoes[oldX][oldY] = -1;
+		
+		//System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
+		desenhaPinos();
+		
+		//DrawPino(g2d,  x, y, peca.get(index).time);
+		
+	
+	}
+	
 
 	private void iniciaVetorPecas() {
 		
 		for (int i = 0; i < 4 ; i ++){
-			pecasVerm.add(new Peao(Tabuleiro.DARK_RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i));
-			pecasAzul.add(new Peao(Tabuleiro.LIGHT_BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i));
-			pecasVerde.add(new Peao(Tabuleiro.DARK_GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i));
-			pecasAma.add(new Peao(Tabuleiro.DARK_YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i));
+			pecasVerm.add(new Peao(Color.RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i));
+			pecasAzul.add(new Peao(Color.BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i));
+			pecasVerde.add(new Peao(Color.GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i));
+			pecasAma.add(new Peao(Color.YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i));
 		}
 	}
 
@@ -213,6 +254,8 @@ public class Tabuleiro extends JPanel   {
 	}
 	
 	static void DrawPino(Graphics2D g2d, int x, int y, Color cor) {
+		
+	
 
 		 g2d.setPaint(cor);
 		 g2d.fill(new Ellipse2D.Double(x,y, 20, 20));
