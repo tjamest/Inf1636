@@ -8,9 +8,11 @@ import java.awt.event.ActionListener;
 
 public class Tabuleiro extends JPanel   {
 	
-	//private Image dado;
+	private static Image dado;
 	int resp = 0;
 	static Graphics2D g2d;
+	static int roll = 0;
+	//boolean dadox = false;
 	
 	private int turno;
 	 
@@ -41,7 +43,7 @@ public class Tabuleiro extends JPanel   {
 	static int[][] elipsesAma = {{400, 400}, {520, 400}, {400, 520}, {520, 520}};
 	
 
-	//private String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
+	private static String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
 	
 
 	public Tabuleiro() {
@@ -63,39 +65,74 @@ public class Tabuleiro extends JPanel   {
 			public void actionPerformed(ActionEvent e) {
 				
 		        addMouseListener(new Jogo());  //mouse
-		        repaint();  
-//		        while(true) {
-//		        	
-//		        }
+		       // repaint();  
+
 
 			}
-		});	
+		});
+        
+        Menu.b4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				 roll = (int)(Math.random()*6+1);
+			     System.out.printf("valor tirado eh %d\n", roll); 
+			    //dadox = true;
+			     dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();
+			    
+			     
+			}
+		});
+        
     }
 
 	public void paintComponent(Graphics g) {
 		
 		repaint();
-
+		
     	super.paintComponent(g);
     	
     	g2d = (Graphics2D) g;
-    	//Graphics2D test = (Graphics2D) g;
     	
     	DrawBoard(g2d);
     	DrawRectangle(g2d);
     	DrawQuadradosColoridos(g2d);
+    	
+    	
  
     	if (Jogo.newgame == true) {
     		
     		iniciaVetorPecas();
     		desenhaPinos();
-
+    		repaint();
+    
     	}
+		
+		
+    	
+//    	if (dadox == true) {
+//    		
+//    		repaint();
+//    		
+//    		g2d.drawImage(dado, 650, 290, null);
+//    		
+//    		dadox = false;
+//    		
+//    		
+//    		
+//    	}
+//    	
+    	
+    	
     	
 //    	System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
 //    	Jogo.printConfereMovimento();
 	}
+private static void desenhaDado() {
+	
+	//Tabuleiro.DrawDados(g2d);
 
+	
+}
 
 	private static void desenhaPinos() {
 		for (int i = 0; i < 4 ; i ++) {	
@@ -255,7 +292,7 @@ public class Tabuleiro extends JPanel   {
 	
 	static void DrawPino(Graphics2D g2d, int x, int y, Color cor) {
 		
-	
+		
 
 		 g2d.setPaint(cor);
 		 g2d.fill(new Ellipse2D.Double(x,y, 20, 20));
@@ -313,24 +350,22 @@ public class Tabuleiro extends JPanel   {
 		g2d.setColor(Color.GRAY);
 		g2d.fill(new Rectangle2D.Double(600, 0, 200, 600));
 		
+		g2d.drawImage(dado, 650, 290, null);
+		
 	}
 	
 
-//DrawDados(test);
+//
 //System.out.printf("valor tirado eh resp %d\n", resp);
 	
-//	private void DrawDados(Graphics2D test) {
-//		resp = TratadorBotao.getNumber();
-//		
-//		if (resp!= 0) {
-//			 repaint();
-//			 dado = new ImageIcon(this.getClass().getResource(images[resp-1])).getImage();
+	private static void DrawDados(Graphics2D test) {
+		
+		//	ta dando ruim
+		
+		// dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();
 //			 test.drawImage(dado, 650, 290, null);
-//			 
-//	
-//		 }
-//
-//	}
+	
+	}
 
 	
 
