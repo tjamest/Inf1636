@@ -1,6 +1,5 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 import javax.swing.*;
 
@@ -45,7 +44,6 @@ public class Menu {
 
 	static void ConfiguraLancaDado() {
 		b4.setBounds(620,400,150,50);
-		b4.addActionListener(new TratadorBotao(b4));
 		b4.setEnabled(false);
 	
 	}
