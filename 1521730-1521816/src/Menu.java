@@ -12,7 +12,7 @@ public class Menu {
 	static JButton b4 = new JButton("Lancar Dado");
 	
 	//Labels
-	static JLabel turno = new JLabel("À Jogar: ");
+	static JLabel turno = new JLabel("A Jogar: ");
 	public static Font turno25 = new Font("Courier New", Font.BOLD, 25);
 	
 	public Menu() {

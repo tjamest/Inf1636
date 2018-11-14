@@ -12,10 +12,8 @@ public class Tabuleiro extends JPanel   {
 	int resp = 0;
 	static Graphics2D g2d;
 	static int roll = 0;
-	//boolean dadox = false;
-	
-	private int turno;
-	 
+	Color fundo;
+
 	private static final long serialVersionUID = -4264416327199530488L;
 	
 	public static  Color LIGHT_BLUE = new Color(51,153,255);
@@ -30,25 +28,23 @@ public class Tabuleiro extends JPanel   {
 	static Vector<Peao> pecasAma = new Vector<Peao>();
 	
 	
-	//posicoes iniciais pino (assim que dá new game)
+	//posicoes iniciais pino (vetor com posicoes de desenho do pino no inicio do jogo)
 	static int[][] pinoIniVerm = {{50, 50}, {170, 50}, {50, 170}, {170, 170}};
 	static int[][] pinoIniAzul = {{50, 410}, {170, 410}, {50, 530}, {170, 530}};
 	static int[][] pinoIniVerde = {{410, 50}, {530, 50}, {410, 170}, {530, 170}};
 	static int[][] pinoIniAmar = {{410, 410}, {530, 410}, {410, 530}, {530, 530}};
 	
-	//posicoes elipses 
+	//posicoes elipses (vetor com posicoes do desenho das elipses bancas)
 	static int[][] elipsesVerm = {{40, 40}, {160, 40}, {40, 160}, {160, 160}};
 	static int[][] elipsesAzul = {{40, 400}, {160, 400}, {40, 520}, {160, 520}};
 	static int[][] elipsesVerde = {{400, 40}, {520, 40}, {400, 160}, {520, 160}};
 	static int[][] elipsesAma = {{400, 400}, {520, 400}, {400, 520}, {520, 520}};
 	
-
+	//Vetor com todos os nomes das imagens dos dados
 	private static String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
 	
 
 	public Tabuleiro() {
-		
-		turno = 0;
 		
     	setLayout(null);
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -65,21 +61,20 @@ public class Tabuleiro extends JPanel   {
 			public void actionPerformed(ActionEvent e) {
 				
 		        addMouseListener(new Jogo());  //mouse
-		       // repaint();  
-
-
 			}
 		});
         
         Menu.b4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				 roll = (int)(Math.random()*6+1);
-			     System.out.printf("valor tirado eh %d\n", roll); 
-			    //dadox = true;
-			     dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();
+				roll = Jogo.numeroDado();
+			    dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();
+			    fundo = Jogo.corEquipedaVez;
+			    if (roll != 6 && Jogo.tirou6 == 0 )
+			    	Jogo.trocaTurno();
+			    else if (Jogo.tirou6 == 3)
+			    	Jogo.trocaTurno();
 			    
-			     
 			}
 		});
         
@@ -96,43 +91,16 @@ public class Tabuleiro extends JPanel   {
     	DrawBoard(g2d);
     	DrawRectangle(g2d);
     	DrawQuadradosColoridos(g2d);
-    	
-    	
  
     	if (Jogo.newgame == true) {
     		
     		iniciaVetorPecas();
     		desenhaPinos();
     		repaint();
-    
     	}
-		
-		
-    	
-//    	if (dadox == true) {
-//    		
-//    		repaint();
-//    		
-//    		g2d.drawImage(dado, 650, 290, null);
-//    		
-//    		dadox = false;
-//    		
-//    		
-//    		
-//    	}
-//    	
-    	
-    	
-    	
-//    	System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
-//    	Jogo.printConfereMovimento();
-	}
-private static void desenhaDado() {
-	
-	//Tabuleiro.DrawDados(g2d);
 
-	
-}
+	}
+
 
 	private static void desenhaPinos() {
 		for (int i = 0; i < 4 ; i ++) {	
@@ -153,24 +121,20 @@ private static void desenhaDado() {
 		
 	}
 	
-	public static void movepeca(Vector<Peao> peca, int x, int y, int index ) {
+	public static void movepeca(Vector<Peao> peca, int x, int y, int index, int dado) {
 		
 		int oldX = (int) Math.ceil(peca.elementAt(index).CoordX/40);
 		int oldY = (int) Math.ceil(peca.elementAt(index).CoordY/40);
 		
 		peca.elementAt(index).CoordX = (x * 40) + 10;
 		peca.elementAt(index).CoordY = (y * 40) + 10;
-		
-		//System.out.printf(" X = %d Y = %d\n", );
-		
-		
-		
+
 		Jogo.posicoes[oldX][oldY] = -1;
-		
-		//System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
+
 		desenhaPinos();
 		
-		//DrawPino(g2d,  x, y, peca.get(index).time);
+		//Jogo.printConfereMovimento();
+		
 		
 	
 	}
@@ -304,7 +268,7 @@ private static void desenhaDado() {
 	static void DrawQuadrado(Graphics2D g2d, int x, int y, Color cor) {
 		
 		g2d.setColor(cor);
-		g2d.fillRect(x, y, 240, 240);
+		//g2d.fillRect(x, y, 240, 240);
 		g2d.setPaint(Color.BLACK);
 		g2d.drawRect(x, y, 240, 240);
 		
@@ -350,22 +314,15 @@ private static void desenhaDado() {
 		g2d.setColor(Color.GRAY);
 		g2d.fill(new Rectangle2D.Double(600, 0, 200, 600));
 		
+		g2d.setColor(fundo);
+		g2d.fill(new Rectangle2D.Double(640, 280, 120, 120));
+		
 		g2d.drawImage(dado, 650, 290, null);
+		
 		
 	}
 	
 
-//
-//System.out.printf("valor tirado eh resp %d\n", resp);
-	
-	private static void DrawDados(Graphics2D test) {
-		
-		//	ta dando ruim
-		
-		// dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();
-//			 test.drawImage(dado, 650, 290, null);
-	
-	}
 
 	
 
