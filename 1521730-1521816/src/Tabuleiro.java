@@ -117,7 +117,7 @@ public class Tabuleiro extends JPanel   {
 			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW);	
 			Jogo.posicoes[(int) Math.ceil(pecasAma.elementAt(i).CoordY/40)][(int) Math.ceil(pecasAma.elementAt(i).CoordY/40)] = i;
 		}
-		//System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
+		
 		
 	}
 	
