@@ -32,6 +32,143 @@ public @interface Importante {
 	
 	
 	
+	Casas de Virada: (Pino vai para o triangulo ou so para a casa branca?)
+	[0][6]
+	[6][6] //triangulo
+	[6][0]
+	[8][0]
+	[8][6] //triangulo
+	[14][6]
+	[14][8]
+	[8][8] //triangulo
+	[8][14]
+	[6][14]
+	[6][8] //triangulo
+	[0][8]
+
+
+
+  se peao na casa de virada e andar!= 0{
+    se casaAtual == casaDeVirada
+      se casaAtual == [6][6] { // x permanece o mesmo, anda em y
+        int y = 6 - andar (que é o que falta do tirar do dado)
+        movimento = [6][y]
+      }
+
+      se casaAtual == [6][0] { // y permanece o mesmo, anda em x
+        int x = 6 + andar (que é o que falta do tirar do dado)
+        movimento = [x][0]
+      }
+
+      se casaAtual == [8][0] { // x permanece o mesmo, anda em y
+        int y = 0 + andar (que é o que falta do tirar do dado)
+        movimento = [8][y]
+      }
+
+      se casaAtual == [8][6] { // y permanece o mesmo, anda em x
+        int x = 8 + andar (que é o que falta do tirar do dado)
+        movimento = [x][6]
+      }
+      se casaAtual == [14][6] { // x permanece o mesmo, anda em y
+        int y = 6 + andar (que é o que falta do tirar do dado)
+        movimento = [14][y]
+      }
+      se casaAtual == [14][8] { // y permanece o mesmo, anda em x
+        int x = 14 - andar (que é o que falta do tirar do dado)
+        movimento = [x][8]
+      }
+      se casaAtual == [8][8] { // x permanece o mesmo, anda em y
+        int y = 8 + andar (que é o que falta do tirar do dado)
+        movimento = [8][y]
+      }
+      se casaAtual == [8][14] { // y permanece o mesmo, anda em x
+        int x = 8 - andar (que é o que falta do tirar do dado)
+        movimento = [x][14]
+      }
+      se casaAtual == [6][14] { // x permanece o mesmo, anda em y
+        int y = 14 - andar (que é o que falta do tirar do dado)
+        movimento = [6][y]
+      }
+      se casaAtual == [6][8] { // y permanece o mesmo, anda em x
+        int x = 6 - andar (que é o que falta do tirar do dado)
+        movimento = [x][8]
+      }
+      se casaAtual == [0][8] { // x permanece o mesmo, anda em y
+        int y = 8 - andar (que é o que falta do tirar do dado)
+        movimento = [0][y]
+      }
+      se casaAtual == [0][6] { // y permanece o mesmo, anda em x
+        int x = 0 + andar (que é o que falta do tirar do dado)
+        movimento = [x][6]
+      }
+  } else { //movimento normal
+
+			se casaAtual.x < 6 && casaAtual.y == 6 { // anda em x normal
+				int x = casaAtual.x + andar
+				movimento = [x][6]
+			}
+			se casaAtual.x == 6 && casaAtual.y > 0 && casaAtual.y < 6 { // anda em y normal
+				int y = casaAtual.y - andar
+				movimento = [6][y]
+			 }
+			se casaAtual.x == 7 && casaAtual.y == 0  { // anda em x normal
+				int x = casaAtual.y + andar
+				movimento = [x][0]
+			}
+			se casaAtual.x == 8 && casaAtual.y > 0 && casaAtual.y < 6 { // anda em y normal
+				int y = casaAtual.y + andar
+				movimento = [8][y]
+			}
+			se casaAtual.x < 14 && casaAtual.x > 8 && casaAtual.y == 6 { // anda em x normal
+				int x = casaAtual.x + andar
+				movimento = [x][6]
+			}
+			se casaAtual.x == 14 && casaAtual.y == 7  { // anda em y normal
+				int y = casaAtual.y + andar
+				movimento = [14][y]
+			}
+			se casaAtual.x < 14 && casaAtual.x > 8 && casaAtual.y == 8 { // anda em x normal
+				int x = casaAtual.x - andar
+				movimento = [x][8]
+			}
+			se casaAtual.x == 8 && casaAtual.y > 8 && casaAtual.y < 14 { // anda em y normal
+				int y = casaAtual.y + andar
+				movimento = [8][y]
+			}
+			se casaAtual.x == 7 && casaAtual.y == 14  { // anda em x normal
+				int x = casaAtual.x - andar
+				movimento = [14][y]
+			}
+			se casaAtual.x == 6 && casaAtual.y > 8 && casaAtual.y < 14 { // anda em y normal
+				int y = casaAtual.y + andar
+				movimento = [8][y]
+			}
+			se casaAtual.x < 6 && casaAtual.x > 0 && casaAtual.y == 8 { // anda em x normal
+        			int x = casaAtual.x - andar
+       				 movimento = [x][8]
+      			}
+			se casaAtual.x == 0 && casaAtual.y == 7  { // anda em y normal
+				int y = casaAtual.y - andar
+				movimento = [0][y]
+			}
+
+  }
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	Jogador só escolherá a peca a ser movimentada caso não seja possível posicionar o peao na casa de saida
 	Caso jogador tire 6 e tiver uma barreira formada com seus peoes, ela deverá ser desfeita. Caso exista 2 barreiras, 
 	 é desfeita aquela mais perto da chegada.
