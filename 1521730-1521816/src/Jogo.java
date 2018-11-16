@@ -6,28 +6,45 @@ import java.util.Vector;
 
 public class Jogo implements MouseListener {
 	
-	public static boolean newgame = false;
+	//matrizes e vetores
+	
 	public static int [][]posicoes= new int[15][15];
+	
+	static int[][] inicialVermelho = {{1, 1}, {1,4}, {4, 1}, {4,4}};
+	static int[][] inicialVerde = {{10, 1}, {13,1}, {10, 4}, {13,4}};
+	static int[][] inicialAmarelo = {{10, 10}, {13,10}, {10, 13}, {13,13}};
+	static int[][] inicialAzul = {{1, 10}, {1,13}, {4, 10}, {4,13}};
+	
+	
+	
+	//variaveis
+	public static boolean newgame = false;
 	public boolean  selecionado = false;
 	public static Color cor;
 	public static int ind, roll;
-	static int turno;
+	public static boolean jogadaNormal = false;
+	
+	private static boolean active = true;
+	
+	public static int tirou6 = 0;
+	public static Color corEquipedaVez;
 	
 	public Jogo() {
 		
 		Menu.b3.setEnabled(true);
 		Menu.b4.setEnabled(true);
-		confereMovimento();
+		preencheMatrizPosicoes();
 		newgame = true;
-		confereTurno();
+		corEquipedaVez = Color.RED;
 		
-		//printConfereMovimento();
+		
+		//printMatrizPosicoes();
 		
 	}
+
+
 	
-//Vetor que confere se casa esta livre ou nao	
-	
-public void confereMovimento() {
+public void preencheMatrizPosicoes() {
 		
 		for (int i = 0 ; i<15; i++) {
 			for (int j = 0 ; j<15 ; j++) {
@@ -38,7 +55,7 @@ public void confereMovimento() {
 		}		
 }
 	
-public static void printConfereMovimento() {
+public static void printMatrizPosicoes() {
 		
 		for (int i = 0 ; i<15; i++) {
 			for (int j = 0 ; j<15 ; j++) {
@@ -49,25 +66,19 @@ public static void printConfereMovimento() {
 			}
 		}
 		
-	}
+}
 	
-	
+// Checa se movimento pode acontecer ou nao	
 	
 public void confereMatrix(int x, int y) {
 	
 	if (posicoes[x][y] == -1) {
 		System.out.printf("Pode mover\n");
-		
-		
 	}
 	
 	else{
-		
-
 		System.out.printf("Casa ocupada \n");
 	}		
-	
-	
 }
 
 	// ---- EVENTOS DO MOUSE ----
@@ -82,146 +93,460 @@ public void confereMatrix(int x, int y) {
 		x = (int) Math.ceil(e.getX()/40);
 		y = (int) Math.ceil(e.getY()/40);
 		
-		System.out.printf("Casa posicao x = %d y = %d \n ", x, y );
+		//System.out.printf("Casa posicao x = %d y = %d \n ", x, y );
 		
-		if (selecionado == false ) {
+		//cor = Tabuleiro.DARK_RED;
+		
+		confereMovimento(x, y); 
+	
+	}
+	
+	
+	
+	//---- MOVIMENTACAO ----
+	protected void confereMovimento(int x, int y) {
+		
+		if (selecionado == false ) { //ainda nao selecionou peca para mover
 			
-			for (int i =0 ; i< 4; i++) {
+			Menu.b4.setEnabled(false);
+			
+			System.out.printf("Selecionando Peca \n"); 
+			System.out.printf("Equipe da vez = %s  \n", getEquipedaVez());
+			
+			if (getEquipedaVez() == "Vermelho") {
 				
-				if ((int)Math.ceil(Tabuleiro.pecasVerm.elementAt(i).CoordX/40) == x 
-						&& (int)Math.ceil(Tabuleiro.pecasVerm.elementAt(i).CoordY/40)== y){
+				ind = pecaSelecionada(Tabuleiro.pecasVerm,  x, y);
+				
+				if (ind != -1) {
 					
-					ind = i;
+					if (getEquipedaVez() != "Vermelho") {
+						System.out.printf("Time Vermelho aguarde sua vez de jogar \n ");
+					}
+					Menu.b4.setEnabled(false);
+					
+					
 					System.out.printf("Peca selecionada = %d\n", ind);
 					selecionado = true;
 					cor = Tabuleiro.DARK_RED;
-					break;
-					
-					
 				}
 				
-				else if ((int)Math.ceil(Tabuleiro.pecasAzul.elementAt(i).CoordX/40) == x 
-						&& (int)Math.ceil(Tabuleiro.pecasAzul.elementAt(i).CoordY/40)== y){
-					
-					ind = i;
-					System.out.printf("Peca selecionada = %d\n", ind);
-					selecionado = true;
-					cor = Tabuleiro.LIGHT_BLUE;
-					break;
-					
-					
-				}
+			}
+			
+			else if (getEquipedaVez() == "Verde") {
+				ind = pecaSelecionada(Tabuleiro.pecasVerde,  x, y);
 				
-				else if ((int)Math.ceil(Tabuleiro.pecasVerde.elementAt(i).CoordX/40) == x 
-						&& (int)Math.ceil(Tabuleiro.pecasVerde.elementAt(i).CoordY/40)== y){
+				if (ind != -1) {
 					
-					ind = i;
+					if (getEquipedaVez() != "Verde") {
+						System.out.printf("Time Verde aguarde sua vez de jogar \n ");
+					}
+					Menu.b4.setEnabled(false);
+					
+					
 					System.out.printf("Peca selecionada = %d\n", ind);
 					selecionado = true;
 					cor = Tabuleiro.DARK_GREEN;
-					break;
-					
-					
 				}
 				
-				else if ((int)Math.ceil(Tabuleiro.pecasAma.elementAt(i).CoordX/40) == x 
-						&& (int)Math.ceil(Tabuleiro.pecasAma.elementAt(i).CoordY/40)== y){
+			}
+			else if (getEquipedaVez() == "Amarelo") {
+				ind = pecaSelecionada(Tabuleiro.pecasAma,  x, y);
+				
+				if (ind != -1) {
 					
-					ind = i;
+					if (getEquipedaVez() != "Amarelo") {
+						System.out.printf("Time Amarelo aguarde sua vez de jogar \n ");
+					}
+					Menu.b4.setEnabled(false);
+					
+					
 					System.out.printf("Peca selecionada = %d\n", ind);
 					selecionado = true;
 					cor = Tabuleiro.DARK_YELLOW;
-					break;
+				}
+				
+			}
+			else if (getEquipedaVez() == "Azul") {
+				ind = pecaSelecionada(Tabuleiro.pecasAzul,  x, y);
+				
+				if (ind != -1) {
+					
+					if (getEquipedaVez() != "Azul") {
+						System.out.printf("Time Azul aguarde sua vez de jogar \n ");
+					}
+					Menu.b4.setEnabled(false);
 					
 					
+					System.out.printf("Peca selecionada = %d\n", ind);
+					selecionado = true;
+					cor = Tabuleiro.LIGHT_BLUE;
 				}	
 			}
+
 		}
-		else if (selecionado != false && roll != 0) {
+		
+		else { // ja tem peca selecionada para mover
+			System.out.printf("Selecionando Posicao \n");
+			 
 			
-			System.out.printf("selecionado = %s\n", selecionado);
 			
 			if (cor == Tabuleiro.DARK_RED ) {
 				
-				if (roll == 5) { // Dado vai para casa de saida
-					
-				}
+				System.out.printf(" X = %d e Y = %d\n", x,y);
 				
-				//caso nao tenha peoes a serem retirados ou ja tenha peao na casa de saida, ele movimenta 5 casas com outro peao qualquer
-				
-				
-				
-				
-				
-				
-				
-				
-				Tabuleiro.movepeca(Tabuleiro.pecasVerm, x, y, ind, roll);
-				
+				movimento(Tabuleiro.pecasVerm, x, y, roll);
 			}
-			else if (cor == Tabuleiro.LIGHT_BLUE) {
-				Tabuleiro.movepeca(Tabuleiro.pecasAzul, x, y, ind, roll);
+			if (cor == Tabuleiro.DARK_GREEN ) {
 				
+				System.out.printf(" X = %d e Y = %d\n", x,y);
+				
+				movimento(Tabuleiro.pecasVerde, x, y,  roll);
 			}
-			else if (cor == Tabuleiro.DARK_GREEN) {
-				Tabuleiro.movepeca(Tabuleiro.pecasVerde, x, y, ind, roll);
+			if (cor == Tabuleiro.LIGHT_BLUE) {
 				
+				System.out.printf(" X = %d e Y = %d\n", x,y);
+				
+				movimento(Tabuleiro.pecasAzul, x, y, roll);
+			}
+			if (cor == Tabuleiro.DARK_YELLOW) {
+				
+				System.out.printf(" X = %d e Y = %d\n", x,y);
+				
+				movimento(Tabuleiro.pecasAma, x, y,  roll);
+			}
+			
+			Menu.b4.setEnabled(true);
+			selecionado = false; 
+			jogadaNormal = false;
+			
+			System.out.printf("Troca turno jogo\n");
+			if (tirou6 == 0) {
+				trocaTurno();
 			}
 			else {
-				Tabuleiro.movepeca(Tabuleiro.pecasAma, x, y, ind, roll);
+				contaSeis();
 			}
 			
-			//Tabuleiro.movepeca(Tabuleiro.pecasVerm, x, y, ind);
-			selecionado = false;
-			cor = Color.BLACK;
 			
-		}
-		else if (roll == 0) {
-			System.out.println("Jogue o dado para concluir o movimento\n");
-			
-		}
-	
-		//Tabuleiro.movepeca(Tabuleiro.pecasVerm, x, y, 0);
-			
-
-		//System.out.println("mouse na posição x=" + e.getX() + " y=" + e.getY()); 
-			
-		confereMatrix(x, y);
+		}	
 	}
 	
-	public static void confereTurno() {
+	
+	//Logica da Movimentacao
+	
+	public static void movimento(Vector<Peao> peca, int x, int y,int dado){
 		
-		turno = (int)(Math.random()*4+1);
-		System.out.printf("valor turno eh %d\n", turno);
+		System.out.printf("indice = %d\n", ind);
+		Tabuleiro.movepeca(peca, x, y, ind, dado);
 		
-		if (turno == 1) {
-			System.out.printf("VEZ VERMELHO \n");
-			
-		}
-		else if (turno == 2) {
-			System.out.printf("VEZ VERDE\n");
-			
-		}
-		else if (turno == 3) {
-			System.out.printf("VEZ AMARELO\n");
-			
-		}
-		else {
-			System.out.printf("VEZ AZUL\n");
-			
-		}
-
+		
 	}
+	
+	
+	//Retorna indice de peca selecionada
+		
+	public static int pecaSelecionada(Vector<Peao> peca, int x, int y) {
+		
+		for (int i =0 ; i< 4; i++) {
+			
+			if (peca.elementAt(i).CoordX == x 
+					&& peca.elementAt(i).CoordY == y){
+				
+				ind = i;
+				//System.out.printf("Peca selecionada = %d\n", ind);
+				return ind;
+			}	
+		}
+		
+		return -1;
+		
+	}	
+	
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	// -- DADO --
 	
 	public static int numeroDado() {
 		
-		 roll = (int)(Math.random()*6+1);
-	     System.out.printf("valor tirado eh %d\n", roll); 
+		roll = 0;
+		roll = (int)(Math.random()*6+1);
+	    System.out.printf("valor tirado eh %d e time  %s\n", roll, getEquipedaVez() ); 
+
+	     if (roll == 5) {
+	    	 Tabuleiro.fundo = corEquipedaVez;
+
+	    	 int aux = jogadaAutomatica(roll);
+	    	 
+	    	 // fazer caso abrigo
+	    	 
+	    	 if (aux == -1) {
+	    		 System.out.printf("Nao fez jogada automatica, faz jogada normal\n", roll); 
+	    		 
+	    		 if (roll == 5 && (Jogo.posicoes[1][6] != -1 && getEquipedaVez() == "Vermelho") ||
+	    		    	 (Jogo.posicoes[8][1] != -1 && getEquipedaVez() == "Verde" ) ||  (Jogo.posicoes[13][8] != -1 && getEquipedaVez() == "Amarelo" ) || 
+	    		    			 (Jogo.posicoes[6][13] != -1 && getEquipedaVez() == "Azul")) {
+	    			 
+	    			// Casa de saida nao vazia e dado igual a 5 = jogada normal
+	    			 Tabuleiro.fundo = corEquipedaVez;
+		    		 System.out.printf("entrou\n");
+		    		 jogadaNormal = true;
+	    
+	    		 }
+	    	 }
+	    	 else {
+	    		 Tabuleiro.fundo = corEquipedaVez;
+	    		 trocaTurno(); 
+	    	 }
+	    	 
+	     }
+	     else {
+	    	 
+	    	 if (roll != 5  && (Jogo.posicoes[1][6] != -1 && getEquipedaVez() == "Vermelho") ||
+	    	 (Jogo.posicoes[8][1] != -1 && getEquipedaVez() == "Verde" ) ||  (Jogo.posicoes[13][8] != -1 && getEquipedaVez() == "Amarelo" ) || 
+	    			 (Jogo.posicoes[6][13] != -1 && getEquipedaVez() == "Azul")) {
+	    		 
+	    		 // Casa de saida nao vazia e dado diferente de  6 = jogada normal
+	    	
+	    		 Tabuleiro.fundo = corEquipedaVez;
+	    		 System.out.printf("entrou\n");
+	    		 jogadaNormal = true;
+
+	    	 }
+	    	 else {
+	    		 
+	    		 if (roll != 5  && (Jogo.posicoes[1][6] == -1 && getEquipedaVez() == "Vermelho") ||
+	    		    	 (Jogo.posicoes[8][1] == -1 && getEquipedaVez() == "Verde" ) ||  (Jogo.posicoes[13][8] == -1 && getEquipedaVez() == "Amarelo" ) || 
+	    		    			 (Jogo.posicoes[6][13] == -1 && getEquipedaVez() == "Azul")) {
+	    			//caso dado diferente de 5 e pino fora da casa de saida =  jogada normal
+	    			 
+	    			 Tabuleiro.fundo = corEquipedaVez;
+	    			 int aux;
+	    			 
+	    			 aux = checaPecaForaDaCasaInicial();
+	    			 
+	    			 if (aux != -1) {
+	    				 System.out.printf("Peca de indice %d da equipe %s fora da casa inicial\n",aux, getEquipedaVez());
+	    				 
+	    				 
+	    			 }
+	    			 else {
+	    				 if (roll != 6) {
+	    				 Tabuleiro.fundo = corEquipedaVez;
+	    				 System.out.printf("xibataa\n");
+	    				 trocaTurno();
+	    				 }
+	    			 }
+		 
+	    		 }
+
+	    		
+	    		 
+	    	 }
+
+	     }
+
 	     return roll;
-	    //dadox = true;
+	}
+	
+	public static int jogadaAutomatica(int dado) {
+		
+		int x = -1, y = -1;
+		Vector<Peao> aux = null;
+
+		if(getEquipedaVez() == "Vermelho") {
+			
+			x = 1;
+			y = 6;
+			aux = Tabuleiro.pecasVerm;
+		}
+		
+		else if(getEquipedaVez() == "Verde") {
+			
+			x = 8;
+			y = 1;
+			aux = Tabuleiro.pecasVerde;
+		}
+		
+		else if(getEquipedaVez() == "Amarelo") {
+			
+			x = 13;
+			y = 8;
+			aux = Tabuleiro.pecasAma;
+		}
+		
+		else if(getEquipedaVez() == "Azul") {
+			
+			x = 6;
+			y = 13;
+			aux = Tabuleiro.pecasAzul;
+		}
+		
+		
+		int indice = buscaPecaInicio(aux);
+		
+		if (posicoes[x][y] == -1 && indice != -1) {
+			Tabuleiro.movepeca(aux, x, y, indice, roll);
+			
+			return 0;
+		}
+		if (indice == -1 )
+			 System.out.printf("Todos os pinos ja estao no jogo\n"); 
+		return -1;
+
+	}
+	
+	//Faz um loop para o movimento automatico ver se tem peca que pode ir pra casa de saida
+	
+	private static int buscaPecaInicio(Vector<Peao> peca) {
+		
+		int [][]pecas = null;
+		int indice = -1;
+		
+		if (getEquipedaVez() == "Vermelho")
+			pecas = inicialVermelho;
+		
+		else if (getEquipedaVez() == "Verde")
+			pecas = inicialVerde;
+		
+		else if (getEquipedaVez() == "Amarelo")
+			pecas = inicialAmarelo;
+		
+		else if (getEquipedaVez() == "Azul")
+			pecas = inicialAzul;
+
+		
+		for (int i =0 ; i< 4; i++) {
+			for (int j = 0; j<4; j++) {
+				
+				if (peca.elementAt(j).CoordX == pecas[i][0] 
+						&&peca.elementAt(j).CoordY == pecas[i][1]){
+		
+					indice = j;
+					System.out.printf("Indice da peca do inicio = %d\n", indice);
+					return indice;
+				}
+				
+			}
+		}
+		
+		return -1;
 		
 	}
 	
+
+	private static int checaPecaForaDaCasaInicial() {
+		
+		
+		int [][]inicial = null;
+		
+		
+		if (getEquipedaVez() == "Vermelho") {
+			
+			inicial = inicialVermelho;
+		}
+		
+		else if (getEquipedaVez() == "Verde") {
+			
+			inicial = inicialVerde;
+		}
+		
+		else if (getEquipedaVez() == "Amarelo") {
+			
+			inicial = inicialAmarelo;
+		}
+		
+		else if (getEquipedaVez() == "Azul") {
+			
+			inicial = inicialAzul;
+		}
+		
+		for (int i =0 ; i< 4; i++) {
+			
+				int aux1 = inicial[i][0];
+				int aux2 = inicial[i][1];
+			
+			
+				if (posicoes[aux1][aux2] == -1){ // posicao esta vazia
+					//peca fora da casa inicial
+					
+					System.out.printf("chacaPecaFora %d %d = %d \n", aux1, aux2, i);
+		
+					return i;
+					
+				
+			}
+				
+			
+		}
+		return -1;
+		
+	}
+	
+	
+	// -- TURNO --
+	
+	public static void trocaTurno() {
+		tirou6 = 0;
+		if(corEquipedaVez == Color.RED) {
+			corEquipedaVez = Color.GREEN;
+			
+		} else if(corEquipedaVez == Color.GREEN) {
+			corEquipedaVez = Color.YELLOW;
+			
+		} else if(corEquipedaVez == Color.YELLOW) {
+			corEquipedaVez = Color.BLUE;
+			
+		} else if(corEquipedaVez ==  Color.BLUE) {
+			corEquipedaVez = Color.RED;
+		}	
+	}
+	
+	public static String getEquipedaVez() {
+		String cor;
+		if(corEquipedaVez == Color.YELLOW){
+			cor = "Amarelo";
+			return cor;
+		}
+		
+		if(corEquipedaVez == Color.BLUE){
+			cor = "Azul";
+			return cor;
+		}
+		
+		if(corEquipedaVez == Color.RED){
+			cor = "Vermelho";
+			return cor;
+		} 
+		
+		if(corEquipedaVez == Color.GREEN) {
+			cor = "Verde";
+			return cor;
+		}
+		
+		return null;
+	}
+	
+	public boolean contaSeis() {
+		tirou6++;
+		System.out.printf("Conta 6 = %d\n", tirou6);
+		if(tirou6 == 3) {
+			tirou6 = 0;
+			return true;
+		}
+		return false;
+	}
+	
+	//-- MOVIMENTACAO PECA -- 
+	
+	
+
 	
 	
 

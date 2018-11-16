@@ -12,11 +12,8 @@ public class Tabuleiro extends JPanel   {
 	int resp = 0;
 	static Graphics2D g2d;
 	static int roll = 0;
-	Color fundo;
-	//boolean dadox = false;
-	
-	private int turno;
-	 
+	static Color fundo;
+
 	private static final long serialVersionUID = -4264416327199530488L;
 	
 	public static  Color LIGHT_BLUE = new Color(51,153,255);
@@ -31,25 +28,29 @@ public class Tabuleiro extends JPanel   {
 	static Vector<Peao> pecasAma = new Vector<Peao>();
 	
 	
-	//posicoes iniciais pino (assim que dá new game)
-	static int[][] pinoIniVerm = {{50, 50}, {170, 50}, {50, 170}, {170, 170}};
-	static int[][] pinoIniAzul = {{50, 410}, {170, 410}, {50, 530}, {170, 530}};
-	static int[][] pinoIniVerde = {{410, 50}, {530, 50}, {410, 170}, {530, 170}};
-	static int[][] pinoIniAmar = {{410, 410}, {530, 410}, {410, 530}, {530, 530}};
+	//posicoes iniciais pino (vetor com posicoes de desenho do pino no inicio do jogo)
+//	static int[][] pinoIniVerm = {{50, 50}, {170, 50}, {50, 170}, {170, 170}};
+//	static int[][] pinoIniAzul = {{50, 410}, {170, 410}, {50, 530}, {170, 530}};
+//	static int[][] pinoIniVerde = {{410, 50}, {530, 50}, {410, 170}, {530, 170}};
+//	static int[][] pinoIniAmar = {{410, 410}, {530, 410}, {410, 530}, {530, 530}};
 	
-	//posicoes elipses 
+	
+	static int[][] pinoIniVerm = {{1, 1}, {1,4}, {4, 1}, {4,4}};
+	static int[][] pinoIniAzul = {{1, 10}, {1,13}, {4, 10}, {4,13}};
+	static int[][] pinoIniVerde = {{10, 1}, {13,1}, {10, 4}, {13,4}};
+	static int[][] pinoIniAmar = {{10, 10}, {13,10}, {10, 13}, {13,13}};
+	
+	//posicoes elipses (vetor com posicoes do desenho das elipses bancas)
 	static int[][] elipsesVerm = {{40, 40}, {160, 40}, {40, 160}, {160, 160}};
 	static int[][] elipsesAzul = {{40, 400}, {160, 400}, {40, 520}, {160, 520}};
 	static int[][] elipsesVerde = {{400, 40}, {520, 40}, {400, 160}, {520, 160}};
 	static int[][] elipsesAma = {{400, 400}, {520, 400}, {400, 520}, {520, 520}};
 	
-
+	//Vetor com todos os nomes das imagens dos dados
 	private static String[] images = {"Dado1.png", "Dado2.png", "Dado3.png", "Dado4.png", "Dado5.png", "Dado6.png"};
 	
 
 	public Tabuleiro() {
-		
-		turno = 0;
 		
     	setLayout(null);
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -66,9 +67,6 @@ public class Tabuleiro extends JPanel   {
 			public void actionPerformed(ActionEvent e) {
 				
 		        addMouseListener(new Jogo());  //mouse
-		       // repaint();  
-
-
 			}
 		});
         
@@ -77,9 +75,30 @@ public class Tabuleiro extends JPanel   {
 				
 				roll = Jogo.numeroDado();
 			    dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();
-			    fundo = Color.red;
+			    //fundo = Jogo.corEquipedaVez;
+//			    if (roll == 5 && (Jogo.posicoes[1][6] != -1 || Jogo.posicoes[8][1] != -1 
+//			    		|| Jogo.posicoes[13][8] != -1  || Jogo.posicoes[6][13] != -1  )) { //jogada automatica
+//			    	
+//			    	Jogo.trocaTurno();
+//			    	System.out.printf("Troca turno 01\n");
+//			    }
+//			    
+//			    
+//			    else if (roll != 5 && roll != 6 && (Jogo.posicoes[1][6] != -1 || Jogo.posicoes[8][1] != -1 
+//			    		|| Jogo.posicoes[13][8] != -1  || Jogo.posicoes[6][13] != -1  )) {
+//			    	//sem peca na casa de saida
+//			    	
+//			    	Jogo.trocaTurno();
+//			    	System.out.printf("Troca turno 02\n");
+//			    	
+//			    }
+//			    
+//			   
+//			    else if (Jogo.tirou6 == 2) {
+//			    	Jogo.trocaTurno();
+//			    	System.out.printf("Troca turno 03\n");
+//			    }
 			    
-			     
 			}
 		});
         
@@ -96,19 +115,16 @@ public class Tabuleiro extends JPanel   {
     	DrawBoard(g2d);
     	DrawRectangle(g2d);
     	DrawQuadradosColoridos(g2d);
-    	
-    	
  
     	if (Jogo.newgame == true) {
     		
     		iniciaVetorPecas();
     		desenhaPinos();
+    		
     		repaint();
-    
     	}
+    	//Jogo.printMatrizPosicoes();
 
-//    	System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
-//    	Jogo.printConfereMovimento();
 	}
 
 
@@ -116,41 +132,43 @@ public class Tabuleiro extends JPanel   {
 		for (int i = 0; i < 4 ; i ++) {	
 			
 			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED);
-			Jogo.posicoes[(int) Math.ceil(pecasVerm.elementAt(i).CoordX/40)][(int) Math.ceil(pecasVerm.elementAt(i).CoordY/40)] = i;
+			Jogo.posicoes[pecasVerm.elementAt(i).CoordX][pecasVerm.elementAt(i).CoordY] = i;
 			
 			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE);
-			Jogo.posicoes[(int) Math.ceil(pecasAzul.elementAt(i).CoordX/40)][(int) Math.ceil(pecasAzul.elementAt(i).CoordY/40)] = i;
+			Jogo.posicoes[pecasAzul.elementAt(i).CoordX][pecasAzul.elementAt(i).CoordY] = i;
 			
 			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN);
-			Jogo.posicoes[(int) Math.ceil(pecasVerde.elementAt(i).CoordX/40)][(int) Math.ceil(pecasVerde.elementAt(i).CoordY/40)] = i;
+			Jogo.posicoes[pecasVerde.elementAt(i).CoordX][pecasVerde.elementAt(i).CoordY] = i;
 			
 			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW);	
-			Jogo.posicoes[(int) Math.ceil(pecasAma.elementAt(i).CoordY/40)][(int) Math.ceil(pecasAma.elementAt(i).CoordY/40)] = i;
+			Jogo.posicoes[pecasAma.elementAt(i).CoordX][pecasAma.elementAt(i).CoordY] = i;
 		}
-		//System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
+		
 		
 	}
 	
 	public static void movepeca(Vector<Peao> peca, int x, int y, int index, int dado) {
 		
-		int oldX = (int) Math.ceil(peca.elementAt(index).CoordX/40);
-		int oldY = (int) Math.ceil(peca.elementAt(index).CoordY/40);
+//		int oldX = (int) Math.ceil(peca.elementAt(index).CoordX/40);
+//		int oldY = (int) Math.ceil(peca.elementAt(index).CoordY/40);
 		
-		peca.elementAt(index).CoordX = (x * 40) + 10;
-		peca.elementAt(index).CoordY = (y * 40) + 10;
+//		peca.elementAt(index).CoordX = (x * 40) + 10;
+//		peca.elementAt(index).CoordY = (y * 40) + 10;
 		
-		//System.out.printf(" X = %d Y = %d\n", );
+		int oldX = peca.elementAt(index).CoordX;
+		int oldY = peca.elementAt(index).CoordY;
 		
-		
-		
+		peca.elementAt(index).CoordX = x;
+		peca.elementAt(index).CoordY = y;
+
 		Jogo.posicoes[oldX][oldY] = -1;
-		
-		//System.out.printf("CONFERE MOVIMENTO APOS INCLUSAO PECAS CARAI\n");
+
 		desenhaPinos();
 		
-		//DrawPino(g2d,  x, y, peca.get(index).time);
+		//Jogo.trocaTurno();
 		
-		Jogo.confereTurno();
+		//Jogo.printConfereMovimento();
+		
 		
 	
 	}
@@ -272,19 +290,20 @@ public class Tabuleiro extends JPanel   {
 	
 	static void DrawPino(Graphics2D g2d, int x, int y, Color cor) {
 		
-		
+		int x1  = (x * 40) + 10;
+		int y1 = (y * 40) + 10;
 
 		 g2d.setPaint(cor);
-		 g2d.fill(new Ellipse2D.Double(x,y, 20, 20));
+		 g2d.fill(new Ellipse2D.Double(x1,y1, 20, 20));
 	     g2d.setPaint(cor);
-	     g2d.draw(new Ellipse2D.Double(x,y, 20, 20));
+	     g2d.draw(new Ellipse2D.Double(x1,y1, 20, 20));
 
 	}
 	
 	static void DrawQuadrado(Graphics2D g2d, int x, int y, Color cor) {
 		
 		g2d.setColor(cor);
-		g2d.fillRect(x, y, 240, 240);
+		//g2d.fillRect(x, y, 240, 240);
 		g2d.setPaint(Color.BLACK);
 		g2d.drawRect(x, y, 240, 240);
 		
