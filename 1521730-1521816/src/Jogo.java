@@ -23,6 +23,7 @@ public class Jogo implements MouseListener {
 	public static Color cor;
 	public static int ind, roll;
 	public static boolean jogadaNormal = false;
+	public static boolean concluiuJogada = false;
 	
 	private static boolean active = true;
 	
@@ -108,7 +109,7 @@ public void confereMatrix(int x, int y) {
 		
 		if (selecionado == false ) { //ainda nao selecionou peca para mover
 			
-			Menu.b4.setEnabled(false);
+			//Menu.b4.setEnabled(false);
 			
 			System.out.printf("Selecionando Peca \n"); 
 			System.out.printf("Equipe da vez = %s  \n", getEquipedaVez());
@@ -116,6 +117,8 @@ public void confereMatrix(int x, int y) {
 			if (getEquipedaVez() == "Vermelho") {
 				
 				ind = pecaSelecionada(Tabuleiro.pecasVerm,  x, y);
+				
+				Movimentacao.MovimentacaoNormal(x,  y, roll);
 				
 				if (ind != -1) {
 					
@@ -194,37 +197,60 @@ public void confereMatrix(int x, int y) {
 				
 				System.out.printf(" X = %d e Y = %d\n", x,y);
 				
-				movimento(Tabuleiro.pecasVerm, x, y, roll);
+				if (Movimentacao.casaX == x  && Movimentacao.casaY == y) {
+					
+					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
+					movimento(Tabuleiro.pecasVerm, x, y, roll);
+					Menu.b4.setEnabled(true);
+					concluiuJogada = true;
+				}
+				else {
+					System.out.printf("PARA DE ROBARRRRRRRR \n");
+				}
+	
 			}
 			if (cor == Tabuleiro.DARK_GREEN ) {
 				
 				System.out.printf(" X = %d e Y = %d\n", x,y);
 				
 				movimento(Tabuleiro.pecasVerde, x, y,  roll);
+				Menu.b4.setEnabled(true);
+				concluiuJogada = true;
 			}
 			if (cor == Tabuleiro.LIGHT_BLUE) {
 				
 				System.out.printf(" X = %d e Y = %d\n", x,y);
 				
 				movimento(Tabuleiro.pecasAzul, x, y, roll);
+				Menu.b4.setEnabled(true);
+				concluiuJogada = true;
 			}
 			if (cor == Tabuleiro.DARK_YELLOW) {
 				
 				System.out.printf(" X = %d e Y = %d\n", x,y);
 				
 				movimento(Tabuleiro.pecasAma, x, y,  roll);
+				Menu.b4.setEnabled(true);
+				concluiuJogada = true;
 			}
 			
-			Menu.b4.setEnabled(true);
+			
 			selecionado = false; 
 			jogadaNormal = false;
 			
-			System.out.printf("Troca turno jogo\n");
-			if (tirou6 == 0) {
+			
+			if (roll != 6 && concluiuJogada == true) {
+				System.out.printf("Troca turno jogo\n");
 				trocaTurno();
+				concluiuJogada = false;
 			}
-			else {
+			else if (roll == 6) { // && tem peca na casa de saida ou fora do jogo
 				contaSeis();
+				if (tirou6 == 3) {
+					System.out.printf("Conta6 = %d \n", contaSeis());
+					System.out.printf("Indice da ultima peca movimentada = %d d time %s \n", contaSeis(), getEquipedaVez());
+					
+				}
 			}
 			
 			
@@ -262,31 +288,29 @@ public void confereMatrix(int x, int y) {
 		
 	}	
 	
-		
-		
-	
-	
-	
-	
-	
 	
 	
 	// -- DADO --
 	
-	public static int numeroDado() {
+	public static int numeroDado(int n) {
 		
-		roll = 0;
-		roll = (int)(Math.random()*6+1);
+		//roll = 0;
+		//roll = (int)(Math.random()*6+1);
+		
+		
+		
+		roll = n;
+		
+		
 	    System.out.printf("valor tirado eh %d e time  %s\n", roll, getEquipedaVez() ); 
 
 	     if (roll == 5) {
 	    	 Tabuleiro.fundo = corEquipedaVez;
-
 	    	 int aux = jogadaAutomatica(roll);
 	    	 
 	    	 // fazer caso abrigo
 	    	 
-	    	 if (aux == -1) {
+	    	 if (aux == -1) { // Todas as pecas do time estao no jogo
 	    		 System.out.printf("Nao fez jogada automatica, faz jogada normal\n", roll); 
 	    		 
 	    		 if (roll == 5 && (Jogo.posicoes[1][6] != -1 && getEquipedaVez() == "Vermelho") ||
@@ -297,6 +321,7 @@ public void confereMatrix(int x, int y) {
 	    			 Tabuleiro.fundo = corEquipedaVez;
 		    		 System.out.printf("entrou\n");
 		    		 jogadaNormal = true;
+		    		 Menu.b4.setEnabled(false);
 	    
 	    		 }
 	    	 }
@@ -306,52 +331,45 @@ public void confereMatrix(int x, int y) {
 	    	 }
 	    	 
 	     }
-	     else {
+	     else if (roll != 5  && (Jogo.posicoes[1][6] != -1 && getEquipedaVez() == "Vermelho") ||
+		    	 (Jogo.posicoes[8][1] != -1 && getEquipedaVez() == "Verde" ) ||  (Jogo.posicoes[13][8] != -1 && getEquipedaVez() == "Amarelo" ) || 
+    			 (Jogo.posicoes[6][13] != -1 && getEquipedaVez() == "Azul")) {
 	    	 
-	    	 if (roll != 5  && (Jogo.posicoes[1][6] != -1 && getEquipedaVez() == "Vermelho") ||
-	    	 (Jogo.posicoes[8][1] != -1 && getEquipedaVez() == "Verde" ) ||  (Jogo.posicoes[13][8] != -1 && getEquipedaVez() == "Amarelo" ) || 
-	    			 (Jogo.posicoes[6][13] != -1 && getEquipedaVez() == "Azul")) {
-	    		 
-	    		 // Casa de saida nao vazia e dado diferente de  6 = jogada normal
-	    	
-	    		 Tabuleiro.fundo = corEquipedaVez;
-	    		 System.out.printf("entrou\n");
-	    		 jogadaNormal = true;
+	    	 		//BUG! peca verde estava na casa de saida da amarela e bugou pq ele achou que era peca amarela q ia sair
+	    	 		//fazer funcao que retorna time da peca que esta em determinado [x][y]
+    		 
+    		 // Casa de saida nao vazia e dado diferente de  6 = jogada normal
+    	
+    		 Tabuleiro.fundo = corEquipedaVez;
+    		 System.out.printf("entrou\n");
+    		 jogadaNormal = true;
+    		 Menu.b4.setEnabled(false);
+
+    	 }
+	    	 
+	     else  if (roll != 5  && (Jogo.posicoes[1][6] == -1 && getEquipedaVez() == "Vermelho") ||
+    		    	 (Jogo.posicoes[8][1] == -1 && getEquipedaVez() == "Verde" ) ||  (Jogo.posicoes[13][8] == -1 && getEquipedaVez() == "Amarelo" ) || 
+	    			 (Jogo.posicoes[6][13] == -1 && getEquipedaVez() == "Azul")) {
+	    	 
+	    	 //caso dado diferente de 5 e pino fora da casa de saida =  jogada normal
+
+	    	 Tabuleiro.fundo = corEquipedaVez;
+	    	 int aux;
+
+	    	 aux = checaPecaForaDaCasaInicial();
+
+	    	 if (aux != -1) {
+	    		 Menu.b4.setEnabled(false);
+	    		 System.out.printf("Peca de indice %d da equipe %s fora da casa inicial\n",aux, getEquipedaVez());
+
 
 	    	 }
-	    	 else {
-	    		 
-	    		 if (roll != 5  && (Jogo.posicoes[1][6] == -1 && getEquipedaVez() == "Vermelho") ||
-	    		    	 (Jogo.posicoes[8][1] == -1 && getEquipedaVez() == "Verde" ) ||  (Jogo.posicoes[13][8] == -1 && getEquipedaVez() == "Amarelo" ) || 
-	    		    			 (Jogo.posicoes[6][13] == -1 && getEquipedaVez() == "Azul")) {
-	    			//caso dado diferente de 5 e pino fora da casa de saida =  jogada normal
-	    			 
-	    			 Tabuleiro.fundo = corEquipedaVez;
-	    			 int aux;
-	    			 
-	    			 aux = checaPecaForaDaCasaInicial();
-	    			 
-	    			 if (aux != -1) {
-	    				 System.out.printf("Peca de indice %d da equipe %s fora da casa inicial\n",aux, getEquipedaVez());
-	    				 
-	    				 
-	    			 }
-	    			 else {
-	    				 if (roll != 6) {
-	    				 Tabuleiro.fundo = corEquipedaVez;
-	    				 System.out.printf("xibataa\n");
-	    				 trocaTurno();
-	    				 }
-	    			 }
-		 
-	    		 }
-
-	    		
-	    		 
+	    	 else  if (roll != 6) { //pensar
+				Tabuleiro.fundo = corEquipedaVez;
+				System.out.printf("xibataa\n");
+				trocaTurno();
 	    	 }
-
 	     }
-
 	     return roll;
 	}
 	

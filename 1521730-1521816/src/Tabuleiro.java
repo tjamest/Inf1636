@@ -14,6 +14,7 @@ public class Tabuleiro extends JPanel   {
 	static int roll = 0;
 	static Color fundo;
 
+
 	private static final long serialVersionUID = -4264416327199530488L;
 	
 	public static  Color LIGHT_BLUE = new Color(51,153,255);
@@ -72,33 +73,13 @@ public class Tabuleiro extends JPanel   {
         
         Menu.b4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+		
+				int x = (int)(Math.random()*6+1);
+				Jogo.numeroDado(x);
+				roll = x;
 				
-				roll = Jogo.numeroDado();
-			    dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();
-			    //fundo = Jogo.corEquipedaVez;
-//			    if (roll == 5 && (Jogo.posicoes[1][6] != -1 || Jogo.posicoes[8][1] != -1 
-//			    		|| Jogo.posicoes[13][8] != -1  || Jogo.posicoes[6][13] != -1  )) { //jogada automatica
-//			    	
-//			    	Jogo.trocaTurno();
-//			    	System.out.printf("Troca turno 01\n");
-//			    }
-//			    
-//			    
-//			    else if (roll != 5 && roll != 6 && (Jogo.posicoes[1][6] != -1 || Jogo.posicoes[8][1] != -1 
-//			    		|| Jogo.posicoes[13][8] != -1  || Jogo.posicoes[6][13] != -1  )) {
-//			    	//sem peca na casa de saida
-//			    	
-//			    	Jogo.trocaTurno();
-//			    	System.out.printf("Troca turno 02\n");
-//			    	
-//			    }
-//			    
-//			   
-//			    else if (Jogo.tirou6 == 2) {
-//			    	Jogo.trocaTurno();
-//			    	System.out.printf("Troca turno 03\n");
-//			    }
-			    
+				//roll = Jogo.numeroDado();
+			    dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();  
 			}
 		});
         
@@ -115,6 +96,7 @@ public class Tabuleiro extends JPanel   {
     	DrawBoard(g2d);
     	DrawRectangle(g2d);
     	DrawQuadradosColoridos(g2d);
+    	ModoDebug(g2d);
  
     	if (Jogo.newgame == true) {
     		
@@ -303,7 +285,7 @@ public class Tabuleiro extends JPanel   {
 	static void DrawQuadrado(Graphics2D g2d, int x, int y, Color cor) {
 		
 		g2d.setColor(cor);
-		//g2d.fillRect(x, y, 240, 240);
+		g2d.fillRect(x, y, 240, 240);
 		g2d.setPaint(Color.BLACK);
 		g2d.drawRect(x, y, 240, 240);
 		
@@ -358,6 +340,84 @@ public class Tabuleiro extends JPanel   {
 	}
 	
 
+	private void ModoDebug(Graphics2D g2d) {
+		
+		g2d.setColor(Jogo.corEquipedaVez);
+		g2d.fillRect(620, 585, 145, 10);
+		
+		JButton dado1 = new JButton("1");
+		JButton dado2 = new JButton("2");
+		JButton dado3 = new JButton("3");
+		JButton dado4 = new JButton("4");
+		JButton dado5 = new JButton("5");
+		JButton dado6 = new JButton("6");
+		
+		
+		//Definindo posicoes
+		
+		dado1.setBounds(620,470,45,45);
+		this.add(dado1);
+		dado2.setBounds(670,470,45,45);
+		this.add(dado2);
+		dado3.setBounds(720,470,45,45);
+		this.add(dado3);
+		dado4.setBounds(620,530,45,45);
+		this.add(dado4);
+		dado5.setBounds(670,530,45,45);
+		this.add(dado5);
+		dado6.setBounds(720,530,45,45);
+		this.add(dado6);
+		
+		//Listeners
+		dado1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					Jogo.numeroDado(1);
+					//dado1.setBackground(Jogo.corEquipedaVez);
+				}
+			});
+		
+		dado2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(2);
+				//dado1.setBackground(Jogo.corEquipedaVez);
+			}
+		});
+		
+		dado3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(3);
+				//dado1.setBackground(Jogo.corEquipedaVez);
+			}
+		});
+		
+		dado4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(4);
+				//dado1.setBackground(Jogo.corEquipedaVez);
+			}
+		});
+		
+		dado5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(5);
+				//dado1.setBackground(Jogo.corEquipedaVez);
+			}
+		});
+		
+		dado6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(6);
+				//dado1.setBackground(Jogo.corEquipedaVez);
+			}
+		});
+
+	}
 
 	
 

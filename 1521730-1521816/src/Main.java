@@ -19,8 +19,8 @@ public class Main extends JFrame {
 	
 	static void ConfiguraFrame() {
 		
-		frame.setSize(800, 620); //mac
-		//frame.setSize(800, 640); //windows
+		//frame.setSize(800, 620); //mac
+		frame.setSize(800, 640); //windows
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
