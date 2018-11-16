@@ -14,13 +14,27 @@ public @interface Importante {
 		Verde = [8][1]
 		Amarelo = [13][8]
 		Azul = [6][13]
+		
+	Casas de Virada: (Pino vai para o triangulo ou so para a casa branca?)
+	[0][6]
+	[6][6] //triangulo
+	[6][0]
+	[8][0]
+	[8][6] //triangulo
+	[14][6]
+	[14][8]
+	[8][8] //triangulo
+	[8][14]
+	[6][14]
+	[6][8] //triangulo
+	[0][8]
 	
 	
 	
 	
-	Jogador sÛ escolher· a peca a ser movimentada caso n„o seja possÌvel posicionar o peao na casa de saida
-	Caso jogador tire 6 e tiver uma barreira formada com seus peoes, ela dever· ser desfeita. Caso exista 2 barreiras, 
-	 È desfeita aquela mais perto da chegada.
+	Jogador s√≥ escolher√° a peca a ser movimentada caso n√£o seja poss√≠vel posicionar o peao na casa de saida
+	Caso jogador tire 6 e tiver uma barreira formada com seus peoes, ela dever√° ser desfeita. Caso exista 2 barreiras, 
+	 √© desfeita aquela mais perto da chegada.
 	
 	
 	
@@ -29,8 +43,8 @@ public @interface Importante {
 	REGRAS E MOVIMENTACAO:
 	
 		FEITO:
-			- Jogada autom·tica de quando se È retirado 5 no dado
-			- N„o mudar o turno ao retirar 6 no dado
+			- Jogada autom√°tica de quando se √© retirado 5 no dado
+			- N√£o mudar o turno ao retirar 6 no dado
 			
 			
 		
