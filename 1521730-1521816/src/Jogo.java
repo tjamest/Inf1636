@@ -118,7 +118,7 @@ public void confereMatrix(int x, int y) {
 				
 				ind = pecaSelecionada(Tabuleiro.pecasVerm,  x, y);
 				
-				Movimentacao.MovimentacaoNormal(x,  y, roll);
+				Movimentacao.MovimentacaoNormal(x,  y, roll, Color.RED, ind);
 				
 				if (ind != -1) {
 					
@@ -205,7 +205,7 @@ public void confereMatrix(int x, int y) {
 					concluiuJogada = true;
 				}
 				else {
-					System.out.printf("PARA DE ROBARRRRRRRR \n");
+					System.out.printf("Movimento Invalido\n");
 				}
 	
 			}
