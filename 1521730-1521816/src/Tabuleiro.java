@@ -33,9 +33,9 @@ public class Tabuleiro extends JPanel   {
 	
 	//posicoes iniciais dos peos do jogo
 	static int[][] pinoIniVerm = {{1, 1}, {1,4}, {4, 1}, {4,4}};
-	static int[][] pinoIniAzul = {{1, 10}, {1,13}, {4, 10}, {4,13}};
 	static int[][] pinoIniVerde = {{10, 1}, {13,1}, {10, 4}, {13,4}};
 	static int[][] pinoIniAmar = {{10, 10}, {13,10}, {10, 13}, {13,13}};
+	static int[][] pinoIniAzul = {{1, 10}, {1,13}, {4, 10}, {4,13}};
 	
 	//posicoes elipses (vetor com posicoes do desenho das elipses bancas)
 	static int[][] elipsesVerm = {{40, 40}, {160, 40}, {40, 160}, {160, 160}};
@@ -145,6 +145,27 @@ public class Tabuleiro extends JPanel   {
 		desenhaPinos();
 
 	}
+	
+	public static void movepeao(Peao peca, int x, int y) {
+		
+//		System.out.printf("------ Move Peao X recebido = %d \n ", x);
+//		System.out.printf("------ Move Peao Y recebido = %d \n ", y);
+//		System.out.printf("------ Move Peao oldX recebido = %d \n ", peca.CoordX);
+//		System.out.printf("------ Move Peao oldY recebido = %d \n ", peca.CoordY);
+		
+		int oldX = peca.CoordX;
+		int oldY = peca.CoordY;
+		
+		peca.CoordX = x;
+		peca.CoordY = y;
+
+		Jogo.posicoes[oldX][oldY] = -1;
+
+		desenhaPinos();
+		
+	}
+	
+	
 	
 
 	private void iniciaVetorPecas() {

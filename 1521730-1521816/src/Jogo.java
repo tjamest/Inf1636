@@ -7,15 +7,7 @@ import java.util.Vector;
 public class Jogo implements MouseListener {
 	
 	//matrizes e vetores
-	
 	public static int [][]posicoes= new int[15][15];
-	
-	static int[][] inicialVermelho = {{1, 1}, {1,4}, {4, 1}, {4,4}};
-	static int[][] inicialVerde = {{10, 1}, {13,1}, {10, 4}, {13,4}};
-	static int[][] inicialAmarelo = {{10, 10}, {13,10}, {10, 13}, {13,13}};
-	static int[][] inicialAzul = {{1, 10}, {1,13}, {4, 10}, {4,13}};
-	
-	
 	
 	//variaveis
 	public static boolean newgame = false;
@@ -26,7 +18,6 @@ public class Jogo implements MouseListener {
 	public static boolean concluiuJogada = false;
 	
 	//private static boolean active = true;
-	
 	public static int tirou6 = 0;
 	public static Color corEquipedaVez;
 	
@@ -196,9 +187,7 @@ public void confereMatrix(int x, int y) {
 		
 		else { // ja tem peca selecionada para mover
 			System.out.printf("Selecionando Posicao \n");
-			 
-			
-			
+
 			if (cor == Tabuleiro.DARK_RED ) {
 				
 				System.out.printf(" X = %d e Y = %d\n", x,y);
@@ -207,6 +196,8 @@ public void confereMatrix(int x, int y) {
 					
 					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
 					movimento(Tabuleiro.times.elementAt(0).peoes, x, y, roll);
+					Tabuleiro.times.elementAt(0).ultimoPinoMovimentado = Tabuleiro.times.elementAt(0).peoes.elementAt(ind);
+					System.out.printf("-- Classe Jogo - ultimo peao movimentado tem indice %d\n", Tabuleiro.times.elementAt(0).peoes.elementAt(ind).id);
 					Menu.b4.setEnabled(true);
 					concluiuJogada = true;
 				}
@@ -223,12 +214,30 @@ public void confereMatrix(int x, int y) {
 					
 					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
 					movimento(Tabuleiro.times.elementAt(1).peoes, x, y,  roll);
+					Tabuleiro.times.elementAt(1).ultimoPinoMovimentado = Tabuleiro.times.elementAt(1).peoes.elementAt(ind);
+					System.out.printf("-- Classe Jogo - ultimo peao movimentado tem indice %d\n", Tabuleiro.times.elementAt(1).peoes.elementAt(ind).id);
 					Menu.b4.setEnabled(true);
 					concluiuJogada = true;
 				}
 				else {
 					System.out.printf("Movimento Invalido\n");
 				}	
+			}
+			if (cor == Tabuleiro.DARK_YELLOW) {
+				System.out.printf(" X = %d e Y = %d\n", x,y);
+				
+				if (Movimentacao.casaX == x  && Movimentacao.casaY == y) {
+					
+					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
+					movimento(Tabuleiro.times.elementAt(2).peoes, x, y,  roll);
+					Tabuleiro.times.elementAt(2).ultimoPinoMovimentado = Tabuleiro.times.elementAt(2).peoes.elementAt(ind);
+					System.out.printf("-- Classe Jogo - ultimo peao movimentado tem indice %d\n", Tabuleiro.times.elementAt(2).peoes.elementAt(ind).id);
+					Menu.b4.setEnabled(true);
+					concluiuJogada = true;
+				}
+				else {
+					System.out.printf("Movimento Invalido\n");
+				}
 			}
 			if (cor == Tabuleiro.LIGHT_BLUE) {
 				
@@ -238,6 +247,8 @@ public void confereMatrix(int x, int y) {
 					
 					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
 					movimento(Tabuleiro.times.elementAt(3).peoes, x, y, roll);
+					Tabuleiro.times.elementAt(3).ultimoPinoMovimentado = Tabuleiro.times.elementAt(3).peoes.elementAt(ind);
+					System.out.printf("-- Classe Jogo - ultimo peao movimentado tem indice %d\n", Tabuleiro.times.elementAt(3).peoes.elementAt(ind).id);
 					Menu.b4.setEnabled(true);
 					concluiuJogada = true;
 					
@@ -245,23 +256,8 @@ public void confereMatrix(int x, int y) {
 				else {
 					System.out.printf("Movimento Invalido\n");
 				}
-				
-				
 			}
-			if (cor == Tabuleiro.DARK_YELLOW) {
-				System.out.printf(" X = %d e Y = %d\n", x,y);
-				
-				if (Movimentacao.casaX == x  && Movimentacao.casaY == y) {
-					
-					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
-					movimento(Tabuleiro.times.elementAt(2).peoes, x, y,  roll);
-					Menu.b4.setEnabled(true);
-					concluiuJogada = true;
-				}
-				else {
-					System.out.printf("Movimento Invalido\n");
-				}
-			}
+			
 
 			selecionado = false; 
 			jogadaNormal = false;
@@ -272,13 +268,14 @@ public void confereMatrix(int x, int y) {
 				trocaTurno();
 				concluiuJogada = false;
 			}
-			else if (roll == 6) { // && tem peca na casa de saida ou fora do jogo
+			else if (roll == 6 && tirou6 <2) { // && tem peca na casa de saida ou fora do jogo
 				contaSeis();
-				if (tirou6 == 3) {
-					System.out.printf("Conta6 = %d \n", contaSeis());
-					System.out.printf("Indice da ultima peca movimentada = %d d time %s \n", contaSeis(), getEquipedaVez());
-					
-				}
+				
+//				if (tirou6 == 3) {
+//					System.out.printf("Conta6 = %d \n", contaSeis());
+//					System.out.printf("Indice da ultima peca movimentada = %d d time %s \n", contaSeis(), getEquipedaVez());
+//					
+//				}
 			}
 			
 			
@@ -366,12 +363,12 @@ public void confereMatrix(int x, int y) {
 	    	 		//BUG! peca verde estava na casa de saida da amarela e bugou pq ele achou que era peca amarela q ia sair
 	    	 		//fazer funcao que retorna time da peca que esta em determinado [x][y]
     		 
-    		 // Casa de saida nao vazia e dado diferente de  6 = jogada normal
+    		 // Casa de saida nao vazia e dado diferente de  5 = jogada normal
     	
-    		 Tabuleiro.fundo = corEquipedaVez;
-    		 System.out.printf("entrou\n");
-    		 jogadaNormal = true;
-    		 Menu.b4.setEnabled(false);
+	    		 Tabuleiro.fundo = corEquipedaVez;
+	    		 System.out.printf("entrou\n");
+	    		 jogadaNormal = true;
+	    		 Menu.b4.setEnabled(false);
 
     	 }
 	    	 
@@ -392,9 +389,41 @@ public void confereMatrix(int x, int y) {
 
 
 	    	 }
-	    	 else  if (roll != 6) { //pensar
+	    	 
+	    	  if (roll == 6 && tirou6 == 2) { // caso 3 x 6
+	    		 contaSeis();
+	    		 //ultimo peao movimentado volta para casa inicial
+	    		 if (getEquipedaVez() == "Vermelho") {
+	    			 
+	    			 Tabuleiro.movepeao(Tabuleiro.times.elementAt(0).ultimoPinoMovimentado, 1, 6);
+	    			 trocaTurno(); 
+	    			 Menu.b4.setEnabled(true);
+	    		 }
+	    		 else if (getEquipedaVez() == "Verde") {
+	    			 
+	    			 Tabuleiro.movepeao(Tabuleiro.times.elementAt(1).ultimoPinoMovimentado, 8, 1);
+	    			 trocaTurno(); 
+	    			 Menu.b4.setEnabled(true);
+	    		 }
+	    		 else if (getEquipedaVez() == "Amarelo") {
+	    			 
+	    			 Tabuleiro.movepeao(Tabuleiro.times.elementAt(2).ultimoPinoMovimentado, 13, 8);
+	    			 trocaTurno(); 
+	    			 Menu.b4.setEnabled(true);
+	    		 }
+	    		 else if (getEquipedaVez() == "Azul") {
+	 
+					 Tabuleiro.movepeao(Tabuleiro.times.elementAt(3).ultimoPinoMovimentado, 6, 13);
+					 trocaTurno(); 
+					 Menu.b4.setEnabled(true);
+	    		 } 
+	    	 }
+	    	 
+	    	 
+	    	 
+	    	 else  if (roll != 6) { 
 				Tabuleiro.fundo = corEquipedaVez;
-				System.out.printf("xibataa\n");
+				System.out.printf("--- Dado != 6  -- Jogada Normal \n");
 				trocaTurno();
 	    	 }
 	     }
@@ -417,21 +446,21 @@ public void confereMatrix(int x, int y) {
 			
 			x = 8;
 			y = 1;
-			aux = Tabuleiro.times.elementAt(2).peoes;
+			aux = Tabuleiro.times.elementAt(1).peoes;
 		}
 		
 		else if(getEquipedaVez() == "Amarelo") {
 			
 			x = 13;
 			y = 8;
-			aux = Tabuleiro.times.elementAt(3).peoes;
+			aux = Tabuleiro.times.elementAt(2).peoes;
 		}
 		
 		else if(getEquipedaVez() == "Azul") {
 			
 			x = 6;
 			y = 13;
-			aux = Tabuleiro.times.elementAt(4).peoes;
+			aux = Tabuleiro.times.elementAt(3).peoes;
 		}
 		
 		
@@ -456,16 +485,16 @@ public void confereMatrix(int x, int y) {
 		int indice = -1;
 		
 		if (getEquipedaVez() == "Vermelho")
-			pecas = inicialVermelho;
+			pecas = Tabuleiro.pinoIniVerm;
 		
 		else if (getEquipedaVez() == "Verde")
-			pecas = inicialVerde;
+			pecas = Tabuleiro.pinoIniVerde;
 		
 		else if (getEquipedaVez() == "Amarelo")
-			pecas = inicialAmarelo;
+			pecas = Tabuleiro.pinoIniAmar;
 		
 		else if (getEquipedaVez() == "Azul")
-			pecas = inicialAzul;
+			pecas = Tabuleiro.pinoIniAzul;
 
 		
 		for (int i =0 ; i< 4; i++) {
@@ -495,22 +524,22 @@ public void confereMatrix(int x, int y) {
 		
 		if (getEquipedaVez() == "Vermelho") {
 			
-			inicial = inicialVermelho;
+			inicial = Tabuleiro.pinoIniVerm;
 		}
 		
 		else if (getEquipedaVez() == "Verde") {
 			
-			inicial = inicialVerde;
+			inicial = Tabuleiro.pinoIniVerde;
 		}
 		
 		else if (getEquipedaVez() == "Amarelo") {
 			
-			inicial = inicialAmarelo;
+			inicial = Tabuleiro.pinoIniAmar;
 		}
 		
 		else if (getEquipedaVez() == "Azul") {
 			
-			inicial = inicialAzul;
+			inicial = Tabuleiro.pinoIniAzul;
 		}
 		
 		for (int i =0 ; i< 4; i++) {
@@ -579,7 +608,7 @@ public void confereMatrix(int x, int y) {
 		return null;
 	}
 	
-	public boolean contaSeis() {
+	public static boolean contaSeis() {
 		tirou6++;
 		System.out.printf("Conta 6 = %d\n", tirou6);
 		if(tirou6 == 3) {
