@@ -22,20 +22,16 @@ public class Tabuleiro extends JPanel   {
 	public static  Color DARK_GREEN = new Color(0, 204, 0);
 	public static  Color DARK_RED = new Color(204, 0, 0);
 	
+	//Lista Times
+	static Vector<Time> times = new Vector<Time>();
+	
 	//vetor de pecas
 	static  Vector<Peao> pecasVerm = new Vector<Peao>();
 	static Vector<Peao> pecasAzul = new Vector<Peao>();
 	static Vector<Peao> pecasVerde = new Vector<Peao>();
 	static Vector<Peao> pecasAma = new Vector<Peao>();
 	
-	
-	//posicoes iniciais pino (vetor com posicoes de desenho do pino no inicio do jogo)
-//	static int[][] pinoIniVerm = {{50, 50}, {170, 50}, {50, 170}, {170, 170}};
-//	static int[][] pinoIniAzul = {{50, 410}, {170, 410}, {50, 530}, {170, 530}};
-//	static int[][] pinoIniVerde = {{410, 50}, {530, 50}, {410, 170}, {530, 170}};
-//	static int[][] pinoIniAmar = {{410, 410}, {530, 410}, {410, 530}, {530, 530}};
-	
-	
+	//posicoes iniciais dos peos do jogo
 	static int[][] pinoIniVerm = {{1, 1}, {1,4}, {4, 1}, {4,4}};
 	static int[][] pinoIniAzul = {{1, 10}, {1,13}, {4, 10}, {4,13}};
 	static int[][] pinoIniVerde = {{10, 1}, {13,1}, {10, 4}, {13,4}};
@@ -100,6 +96,7 @@ public class Tabuleiro extends JPanel   {
  
     	if (Jogo.newgame == true) {
     		
+    		iniciaTimes();
     		iniciaVetorPecas();
     		desenhaPinos();
     		
@@ -146,13 +143,7 @@ public class Tabuleiro extends JPanel   {
 		Jogo.posicoes[oldX][oldY] = -1;
 
 		desenhaPinos();
-		
-		//Jogo.trocaTurno();
-		
-		//Jogo.printConfereMovimento();
-		
-		
-	
+
 	}
 	
 
@@ -164,10 +155,30 @@ public class Tabuleiro extends JPanel   {
 			pecasVerde.add(new Peao(Color.GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i));
 			pecasAma.add(new Peao(Color.YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i));
 		}
+		
+		times.elementAt(0).recebePeoes(pecasVerm);
+		times.elementAt(1).recebePeoes(pecasVerde);
+		times.elementAt(2).recebePeoes(pecasAma);
+		times.elementAt(3).recebePeoes(pecasAzul);
 	}
 
-
 	
+	private void iniciaTimes() {
+		
+		Time equipeVermelho = new Time(Color.RED);
+		Time equipeVerde = new Time(Color.GREEN);
+		Time equipeAmarelo = new Time(Color.YELLOW);
+		Time equipeAzul = new Time(Color.BLUE);
+
+		times.add(equipeVermelho);
+		times.add(equipeVerde);
+		times.add(equipeAmarelo);
+		times.add(equipeAzul);
+		
+
+	}
+	
+
 	private void DrawBoard(Graphics2D g2d) {
 		
 		
@@ -373,7 +384,7 @@ public class Tabuleiro extends JPanel   {
 				public void actionPerformed(ActionEvent e) {
 					
 					Jogo.numeroDado(1);
-					//dado1.setBackground(Jogo.corEquipedaVez);
+					
 				}
 			});
 		
@@ -381,7 +392,7 @@ public class Tabuleiro extends JPanel   {
 			public void actionPerformed(ActionEvent e) {
 				
 				Jogo.numeroDado(2);
-				//dado1.setBackground(Jogo.corEquipedaVez);
+				
 			}
 		});
 		
@@ -389,7 +400,7 @@ public class Tabuleiro extends JPanel   {
 			public void actionPerformed(ActionEvent e) {
 				
 				Jogo.numeroDado(3);
-				//dado1.setBackground(Jogo.corEquipedaVez);
+				
 			}
 		});
 		
@@ -397,7 +408,7 @@ public class Tabuleiro extends JPanel   {
 			public void actionPerformed(ActionEvent e) {
 				
 				Jogo.numeroDado(4);
-				//dado1.setBackground(Jogo.corEquipedaVez);
+				
 			}
 		});
 		
@@ -405,7 +416,7 @@ public class Tabuleiro extends JPanel   {
 			public void actionPerformed(ActionEvent e) {
 				
 				Jogo.numeroDado(5);
-				//dado1.setBackground(Jogo.corEquipedaVez);
+				
 			}
 		});
 		
@@ -413,7 +424,7 @@ public class Tabuleiro extends JPanel   {
 			public void actionPerformed(ActionEvent e) {
 				
 				Jogo.numeroDado(6);
-				//dado1.setBackground(Jogo.corEquipedaVez);
+				
 			}
 		});
 

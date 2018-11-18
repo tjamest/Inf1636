@@ -3,17 +3,12 @@ import java.awt.Color;
 public class Movimentacao {
 	
 	static int casaX, casaY;
-	
-	static int[][] caminhoVermelho = {{1, 7}, {2, 7},{3, 7},{4, 7},{5, 7}};
-	static int[][] caminhoVerde = {{7, 1}, {7, 2},{7, 3},{7, 4},{7, 5}};
-	static int[][] caminhoAmarelo = {{13, 7}, {12, 7},{11, 7},{10, 7},{9, 7}};
-	static int[][] caminhoAzul = {{7, 13}, {7, 12},{7, 11},{7, 10},{7, 9}};
-	
+
 	public Movimentacao() {
 		
 	}
 	
-	public static void MovimentacaoNormal(int x, int y, int roll, Color cor, int indice) { //mandar cor da peca
+	public static void MovimentacaoNormal(int x, int y, int roll, Color cor, int indice) { 
 		
 		//Caminho branco
 
@@ -52,14 +47,15 @@ public class Movimentacao {
 				auxY = 0;
 				z ++;
 			}
-			else if (auxX == 7 && auxY == 0 && z!= i) { 
-				//casa de virada [7][0] para pecas verdes, anda em y
-				
-				//caso peca for verde {}
-				//else
-				auxX += 1;
-				auxY = 0;
-				z ++;
+			else if (auxX == 7 && auxY == 0 && z!= i) { // --------------------- Casa de virada caso peca for verde
+				if (cor == Color.GREEN) {
+					auxY += 1;
+					z++;
+				}
+				else {
+					auxX += 1;
+					z ++;
+				}
 			}
 			else if (auxX == 8 && auxY >= 0 && auxY < 5 && z!= i) { 
 				//casa de virada [8][0], anda em y
@@ -84,12 +80,16 @@ public class Movimentacao {
 				auxY += 1;
 				z ++;
 			}
-			else if (auxX == 14 && auxY == 7 && z!= i) { 
-				//casa de virada [14][7] para pecas amarelas , anda em x
-				//caso peca for amarela {}
-				//else
-				auxY += 1;
-				z ++;
+			else if (auxX == 14 && auxY == 7 && z!= i) {  // --------------------- Casa de virada caso peca for amarela 
+				
+				if (cor == Color.YELLOW) {
+					auxX -= 1;
+					z++;
+				}
+				else {
+					auxY += 1;
+					z ++;
+				}
 			}
 			else if (auxX <= 14 && auxX > 9 && auxY == 8 && z!= i) { 
 				//casa de virada [14][8], anda em x
@@ -113,12 +113,16 @@ public class Movimentacao {
 				auxX -= 1;
 				z ++;
 			}
-			else if (auxX == 7 && auxY == 14 && z!= i) { 
-				//casa de virada [7][14] para pecas azuis , anda em y
-				//caso peca for azul{}
-				//else
-				auxX -= 1;
-				z ++;
+			else if (auxX == 7 && auxY == 14 && z!= i) { // --------------------- Casa de virada caso peca for azul	
+				if (cor == Color.BLUE) {
+					auxY -= 1;
+					z++;
+				}
+				else {
+					auxX -= 1;
+					z ++;
+					
+				}
 			}
 			else if (auxX == 6 && auxY == 14 && z!= i) { 
 				//casa de virada [6][14], anda em y
@@ -149,10 +153,8 @@ public class Movimentacao {
 				auxY -= 1;
 				z ++;
 			}
-			else if (auxX == 0 && auxY == 7 && z!= i ) { 
-				//casa de virada [0][7] para pecas vermelhas , anda em x
-				//caso peca for vermelha
-				
+			else if (auxX == 0 && auxY == 7 && z!= i ) {  // --------------------- Casa de virada caso peca for vermelha
+		
 				if (cor == Color.RED) {
 					auxX += 1;
 					z++;
@@ -164,45 +166,69 @@ public class Movimentacao {
 			}
 			
 			
-			//Casos caminhos coloridos
+			// --------------------- CASOS CAMINHOS COLORIDOS ----------------------------------
 			
-			//Caso caminho Vermelho
-			//static int[][] caminhoVermelho = {{1, 7}, {2, 7},{3, 7},{4, 7},{5, 7}};
+			//Caso caminho Vermelho int[][] caminhoVermelho = {{1, 7}, {2, 7},{3, 7},{4, 7},{5, 7}};
 			
 			else if (auxX > 0 && auxX < 6 && auxY == 7 && z!= i && cor == Color.RED) {
-				
+				// se x >0 e x < 6 e y == 7
 				auxX += 1;
 				z++;
 				
 			}
 			else if (auxX == 6 && auxY == 7 && z!= i && cor == Color.RED) {
-				
+				//aumentar em +1 de peca na casa final no time vermelho
 				System.out.printf("Peca Vermelha de indice = %d chegou na casa final \n", indice);
 				System.out.printf("Escolha outra peca para mover \n", indice);
 				z++;
 			}
 			
-			//Caso caminho Verde
-			//static int[][] caminhoVerde = {{7, 1}, {7, 2},{7, 3},{7, 4},{7, 5}};
+			//Caso caminho Verde int[][] caminhoVerde = {{7, 1}, {7, 2},{7, 3},{7, 4},{7, 5}};
+			else if (auxX == 7 && auxY > 0 && auxY < 6 && z!= i && cor == Color.GREEN) {
+				// se x == 7 e y >0 e y < 6
+				
+				auxY += 1;
+				z++;
+				
+			}
+			else if (auxX == 7 && auxY == 6 && z!= i && cor == Color.GREEN) {
+				//aumentar em +1 de peca na casa final no time verde
+				System.out.printf("Peca Verde de indice = %d chegou na casa final \n", indice);
+				System.out.printf("Escolha outra peca para mover \n", indice);
+				z++;
+			}
 			
-			//Caso caminho Amarelo
-			//static int[][] caminhoAmarelo = {{13, 7}, {12, 7},{11, 7},{10, 7},{9, 7}};
+			//Caso caminho Amarelo static int[][] caminhoAmarelo = {{13, 7}, {12, 7},{11, 7},{10, 7},{9, 7}};
+			else if (auxX < 14 && auxX > 8 && auxY == 7 && z!= i && cor == Color.YELLOW) {
+				// se y == 7 e x< 14 e x> 8 
+				
+				auxX -= 1;
+				z++;
+				
+			}
+			else if (auxX == 8 && auxY == 7 && z!= i && cor == Color.YELLOW) {
+				//aumentar em +1 de peca na casa final no time amarelo
+				System.out.printf("Peca Amarela de indice = %d chegou na casa final \n", indice);
+				System.out.printf("Escolha outra peca para mover \n", indice);
+				z++;
+			}
 			
 			//Caso caminho Azul
 			//static int[][] caminhoAzul = {{7, 13}, {7, 12},{7, 11},{7, 10},{7, 9}};
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
+			else if (auxY < 14 && auxY > 8 && auxX == 7 && z!= i && cor == Color.BLUE) {
+				// se x == 7  8 e y< 14 e y> 8 
+				
+				auxY -= 1;
+				z++;
+				
+			}
+			else if (auxX == 7 && auxY == 8 && z!= i && cor == Color.BLUE) {
+				//aumentar em +1 de peca na casa final no time amarelo
+				System.out.printf("Peca Amarela de indice = %d chegou na casa final \n", indice);
+				System.out.printf("Escolha outra peca para mover \n", indice);
+				z++;
+			}
 		}
 		
 		casaX = auxX;
@@ -212,35 +238,7 @@ public class Movimentacao {
 	
 	}//fim movimenntacao normal
 
-	
-//	public static void MovimentacaoColorida(int x, int y, int roll, Color cor) {
-//		
-//		int auxX = x;
-//		int auxY = y;
-//		int z = -1 ;
-//		
-//		if (cor == Color.RED) { //peca vermelha deve ir pro caminho colorido
-//			//static int[][] caminhoVermelho = {{1, 7}, {2, 7},{3, 7},{4, 7},{5, 7}};
-//			
-//			for (int i = 0 ; i<roll; i++) {
-//				
-//				if (auxX == 0 && auxY == 7 && z!= i) { //movimenta em x
-//					
-//					auxX += 1;
-//					z++;
-//				}
-//			}
-//		}
-//		
-//		casaX = auxX;
-//		casaY = auxY;
-//		
-//		System.out.printf(" Classe Movimentacao - Caminho Colorido - mover para [%d][%d]\n", casaX, casaY );
-//	
-//	}//fim movimentacao colorida
-	
 
-	
 
 
 }//fim classe movimentacao

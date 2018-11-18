@@ -2,22 +2,34 @@
 
 
 import java.awt.Color;
-import java.awt.List;
+import java.util.Vector;
 public class Time {
 	
-	protected List peoes;
-	Color time;
+	public Vector<Peao> peoes;
+	private Color corT;
 	public int qtdPinosCasaFinal = 0;
+	protected int dado;
 	protected Peao ultimoPinoMovimentado;
+	
+	
 	
 	public Time(Color cor) {
 		
+		this.corT = cor;
+		qtdPinosCasaFinal = 0;
+		
 	}
 	
-	public void addPinoCasaFinal(int n) {
+	public void addPinoCasaFinal() {
 		qtdPinosCasaFinal += 1;
 	}
 	
+	public void recebePeoes (Vector<Peao> p) {
+		peoes = p;
+	}
+	public Color getCor() {
+		return corT;
+	}
 	
 
 }

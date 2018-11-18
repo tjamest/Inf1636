@@ -25,7 +25,7 @@ public class Jogo implements MouseListener {
 	public static boolean jogadaNormal = false;
 	public static boolean concluiuJogada = false;
 	
-	private static boolean active = true;
+	//private static boolean active = true;
 	
 	public static int tirou6 = 0;
 	public static Color corEquipedaVez;
@@ -116,7 +116,7 @@ public void confereMatrix(int x, int y) {
 			
 			if (getEquipedaVez() == "Vermelho") {
 				
-				ind = pecaSelecionada(Tabuleiro.pecasVerm,  x, y);
+				ind = pecaSelecionada(Tabuleiro.times.elementAt(0).peoes,  x, y);
 				
 				Movimentacao.MovimentacaoNormal(x,  y, roll, Color.RED, ind);
 				
@@ -136,7 +136,9 @@ public void confereMatrix(int x, int y) {
 			}
 			
 			else if (getEquipedaVez() == "Verde") {
-				ind = pecaSelecionada(Tabuleiro.pecasVerde,  x, y);
+				ind = pecaSelecionada(Tabuleiro.times.elementAt(1).peoes,  x, y);
+				
+				Movimentacao.MovimentacaoNormal(x,  y, roll, Color.GREEN, ind);
 				
 				if (ind != -1) {
 					
@@ -153,7 +155,9 @@ public void confereMatrix(int x, int y) {
 				
 			}
 			else if (getEquipedaVez() == "Amarelo") {
-				ind = pecaSelecionada(Tabuleiro.pecasAma,  x, y);
+				ind = pecaSelecionada(Tabuleiro.times.elementAt(2).peoes,  x, y);
+				
+				Movimentacao.MovimentacaoNormal(x,  y, roll, Color.YELLOW, ind);
 				
 				if (ind != -1) {
 					
@@ -170,7 +174,9 @@ public void confereMatrix(int x, int y) {
 				
 			}
 			else if (getEquipedaVez() == "Azul") {
-				ind = pecaSelecionada(Tabuleiro.pecasAzul,  x, y);
+				ind = pecaSelecionada(Tabuleiro.times.elementAt(3).peoes,  x, y);
+				
+				Movimentacao.MovimentacaoNormal(x,  y, roll, Color.BLUE, ind);
 				
 				if (ind != -1) {
 					
@@ -200,7 +206,7 @@ public void confereMatrix(int x, int y) {
 				if (Movimentacao.casaX == x  && Movimentacao.casaY == y) {
 					
 					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
-					movimento(Tabuleiro.pecasVerm, x, y, roll);
+					movimento(Tabuleiro.times.elementAt(0).peoes, x, y, roll);
 					Menu.b4.setEnabled(true);
 					concluiuJogada = true;
 				}
@@ -213,28 +219,50 @@ public void confereMatrix(int x, int y) {
 				
 				System.out.printf(" X = %d e Y = %d\n", x,y);
 				
-				movimento(Tabuleiro.pecasVerde, x, y,  roll);
-				Menu.b4.setEnabled(true);
-				concluiuJogada = true;
+				if (Movimentacao.casaX == x  && Movimentacao.casaY == y) {
+					
+					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
+					movimento(Tabuleiro.times.elementAt(1).peoes, x, y,  roll);
+					Menu.b4.setEnabled(true);
+					concluiuJogada = true;
+				}
+				else {
+					System.out.printf("Movimento Invalido\n");
+				}	
 			}
 			if (cor == Tabuleiro.LIGHT_BLUE) {
 				
 				System.out.printf(" X = %d e Y = %d\n", x,y);
 				
-				movimento(Tabuleiro.pecasAzul, x, y, roll);
-				Menu.b4.setEnabled(true);
-				concluiuJogada = true;
+				if (Movimentacao.casaX == x  && Movimentacao.casaY == y) {
+					
+					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
+					movimento(Tabuleiro.times.elementAt(3).peoes, x, y, roll);
+					Menu.b4.setEnabled(true);
+					concluiuJogada = true;
+					
+				}
+				else {
+					System.out.printf("Movimento Invalido\n");
+				}
+				
+				
 			}
 			if (cor == Tabuleiro.DARK_YELLOW) {
-				
 				System.out.printf(" X = %d e Y = %d\n", x,y);
 				
-				movimento(Tabuleiro.pecasAma, x, y,  roll);
-				Menu.b4.setEnabled(true);
-				concluiuJogada = true;
+				if (Movimentacao.casaX == x  && Movimentacao.casaY == y) {
+					
+					System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
+					movimento(Tabuleiro.times.elementAt(2).peoes, x, y,  roll);
+					Menu.b4.setEnabled(true);
+					concluiuJogada = true;
+				}
+				else {
+					System.out.printf("Movimento Invalido\n");
+				}
 			}
-			
-			
+
 			selecionado = false; 
 			jogadaNormal = false;
 			
@@ -382,28 +410,28 @@ public void confereMatrix(int x, int y) {
 			
 			x = 1;
 			y = 6;
-			aux = Tabuleiro.pecasVerm;
+			aux = Tabuleiro.times.elementAt(0).peoes;
 		}
 		
 		else if(getEquipedaVez() == "Verde") {
 			
 			x = 8;
 			y = 1;
-			aux = Tabuleiro.pecasVerde;
+			aux = Tabuleiro.times.elementAt(2).peoes;
 		}
 		
 		else if(getEquipedaVez() == "Amarelo") {
 			
 			x = 13;
 			y = 8;
-			aux = Tabuleiro.pecasAma;
+			aux = Tabuleiro.times.elementAt(3).peoes;
 		}
 		
 		else if(getEquipedaVez() == "Azul") {
 			
 			x = 6;
 			y = 13;
-			aux = Tabuleiro.pecasAzul;
+			aux = Tabuleiro.times.elementAt(4).peoes;
 		}
 		
 		
@@ -561,8 +589,10 @@ public void confereMatrix(int x, int y) {
 		return false;
 	}
 	
-	//-- MOVIMENTACAO PECA -- 
-	
+
+	public void passaVez() {
+		trocaTurno();
+	}
 	
 
 	
