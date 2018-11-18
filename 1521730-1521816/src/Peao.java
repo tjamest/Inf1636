@@ -10,6 +10,8 @@ public class Peao {
 	int id;
 	int CoordX;
 	int CoordY;
+	protected int qtdCasasAndadas = 0;
+	boolean abrigo = false;
 
 	
 	public Peao (Color cor, int x, int y, int i) { // Time x

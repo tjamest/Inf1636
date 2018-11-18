@@ -100,33 +100,49 @@ public class Tabuleiro extends JPanel   {
     		iniciaVetorPecas();
     		desenhaPinos();
     		
+    		
     		repaint();
     	}
     	//Jogo.printMatrizPosicoes();
 
 	}
 
-
 	private static void desenhaPinos() {
+		
+	
 		for (int i = 0; i < 4 ; i ++) {	
-			
+
 			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED);
 			Jogo.posicoes[pecasVerm.elementAt(i).CoordX][pecasVerm.elementAt(i).CoordY] = i;
-			
+
 			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE);
 			Jogo.posicoes[pecasAzul.elementAt(i).CoordX][pecasAzul.elementAt(i).CoordY] = i;
-			
+
 			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN);
 			Jogo.posicoes[pecasVerde.elementAt(i).CoordX][pecasVerde.elementAt(i).CoordY] = i;
-			
+
 			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW);	
 			Jogo.posicoes[pecasAma.elementAt(i).CoordX][pecasAma.elementAt(i).CoordY] = i;
 		}
+
 		
+		if (Jogo.ehAbrigo == true) {
+			
+			int x1  = (Jogo.abrigoX2 * 40) + 10;
+			int y1 = (Jogo.abrigoY2 * 40) + 10;
+			
+			g2d.setPaint(Jogo.c1);
+			g2d.fill(new Ellipse2D.Double(x1,y1, 20, 20));
+			
+			g2d.setPaint(Jogo.c2);
+			g2d.fill(new Ellipse2D.Double(x1+3,y1+3, 15, 15));
+			
+		}
+
 		
 	}
 	
-	public static void movepeca(Vector<Peao> peca, int x, int y, int index, int dado) {
+	public static void movepeca(Vector<Peao> peca, int x, int y, int index, int dado, boolean abrigo) {
 		
 //		int oldX = (int) Math.ceil(peca.elementAt(index).CoordX/40);
 //		int oldY = (int) Math.ceil(peca.elementAt(index).CoordY/40);
@@ -139,10 +155,11 @@ public class Tabuleiro extends JPanel   {
 		
 		peca.elementAt(index).CoordX = x;
 		peca.elementAt(index).CoordY = y;
+		
 
 		Jogo.posicoes[oldX][oldY] = -1;
+		
 
-		desenhaPinos();
 
 	}
 	
@@ -165,9 +182,6 @@ public class Tabuleiro extends JPanel   {
 		
 	}
 	
-	
-	
-
 	private void iniciaVetorPecas() {
 		
 		for (int i = 0; i < 4 ; i ++){
@@ -182,7 +196,6 @@ public class Tabuleiro extends JPanel   {
 		times.elementAt(2).recebePeoes(pecasAma);
 		times.elementAt(3).recebePeoes(pecasAzul);
 	}
-
 	
 	private void iniciaTimes() {
 		
@@ -199,7 +212,6 @@ public class Tabuleiro extends JPanel   {
 
 	}
 	
-
 	private void DrawBoard(Graphics2D g2d) {
 		
 		
@@ -371,7 +383,6 @@ public class Tabuleiro extends JPanel   {
 		
 	}
 	
-
 	private void ModoDebug(Graphics2D g2d) {
 		
 		g2d.setColor(Jogo.corEquipedaVez);
@@ -450,8 +461,5 @@ public class Tabuleiro extends JPanel   {
 		});
 
 	}
-
-	
-
 
 }

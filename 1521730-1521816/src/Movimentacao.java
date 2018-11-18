@@ -158,6 +158,7 @@ public class Movimentacao {
 				if (cor == Color.RED) {
 					auxX += 1;
 					z++;
+					System.out.printf("ENTROU CARAI NESS BUCETA \n", indice);
 				}
 				else {
 					auxY -= 1;
@@ -172,6 +173,7 @@ public class Movimentacao {
 			
 			else if (auxX > 0 && auxX < 6 && auxY == 7 && z!= i && cor == Color.RED) {
 				// se x >0 e x < 6 e y == 7
+				System.out.printf("ENTROU CARAI NESS BUCETA \n", indice);
 				auxX += 1;
 				z++;
 				
