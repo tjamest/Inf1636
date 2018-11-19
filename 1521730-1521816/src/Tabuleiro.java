@@ -112,37 +112,37 @@ public class Tabuleiro extends JPanel   {
 	
 		for (int i = 0; i < 4 ; i ++) {	
 
-			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED);
+			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED, pecasVerm.elementAt(i).abrigo);
 			Jogo.posicoes[pecasVerm.elementAt(i).CoordX][pecasVerm.elementAt(i).CoordY] = i;
 
-			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE);
+			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE, pecasAzul.elementAt(i).abrigo);
 			Jogo.posicoes[pecasAzul.elementAt(i).CoordX][pecasAzul.elementAt(i).CoordY] = i;
 
-			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN);
+			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN, pecasVerde.elementAt(i).abrigo);
 			Jogo.posicoes[pecasVerde.elementAt(i).CoordX][pecasVerde.elementAt(i).CoordY] = i;
 
-			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW);	
+			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW, pecasAma.elementAt(i).abrigo);	
 			Jogo.posicoes[pecasAma.elementAt(i).CoordX][pecasAma.elementAt(i).CoordY] = i;
 		}
 
 		
-		if (Jogo.ehAbrigo == true) {
-			
-			int x1  = (Jogo.abrigoX2 * 40) + 10;
-			int y1 = (Jogo.abrigoY2 * 40) + 10;
-			
-			g2d.setPaint(Jogo.c1);
-			g2d.fill(new Ellipse2D.Double(x1,y1, 20, 20));
-			
-			g2d.setPaint(Jogo.c2);
-			g2d.fill(new Ellipse2D.Double(x1+3,y1+3, 15, 15));
-			
-		}
+//		if (Jogo.ehAbrigo == true) {
+//			
+//			int x1  = (Jogo.abrigoX2 * 40) + 10;
+//			int y1 = (Jogo.abrigoY2 * 40) + 10;
+//			
+//			g2d.setPaint(Jogo.c1);
+//			g2d.fill(new Ellipse2D.Double(x1,y1, 20, 20));
+//			
+//			g2d.setPaint(Jogo.c2);
+//			g2d.fill(new Ellipse2D.Double(x1+3,y1+3, 15, 15));
+//			
+//		}
 
 		
 	}
 	
-	public static void movepeca(Vector<Peao> peca, int x, int y, int index, int dado, boolean abrigo) {
+	public static void movepeca(Peao peca , int x, int y, int index, int dado, boolean abrigo) {
 		
 //		int oldX = (int) Math.ceil(peca.elementAt(index).CoordX/40);
 //		int oldY = (int) Math.ceil(peca.elementAt(index).CoordY/40);
@@ -150,16 +150,18 @@ public class Tabuleiro extends JPanel   {
 //		peca.elementAt(index).CoordX = (x * 40) + 10;
 //		peca.elementAt(index).CoordY = (y * 40) + 10;
 		
-		int oldX = peca.elementAt(index).CoordX;
-		int oldY = peca.elementAt(index).CoordY;
+		//diminuir tamanho do peao de cima caso abrigo
 		
-		peca.elementAt(index).CoordX = x;
-		peca.elementAt(index).CoordY = y;
+		int oldX = peca.CoordX;
+		int oldY = peca.CoordY;
+		
+		peca.CoordX = x;
+		peca.CoordY = y;
 		
 
 		Jogo.posicoes[oldX][oldY] = -1;
 		
-
+		//desenhaPinos();
 
 	}
 	
@@ -185,10 +187,10 @@ public class Tabuleiro extends JPanel   {
 	private void iniciaVetorPecas() {
 		
 		for (int i = 0; i < 4 ; i ++){
-			pecasVerm.add(new Peao(Color.RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i));
-			pecasAzul.add(new Peao(Color.BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i));
-			pecasVerde.add(new Peao(Color.GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i));
-			pecasAma.add(new Peao(Color.YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i));
+			pecasVerm.add(new Peao(Color.RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i, false));
+			pecasAzul.add(new Peao(Color.BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i, false));
+			pecasVerde.add(new Peao(Color.GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i, false));
+			pecasAma.add(new Peao(Color.YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i, false));
 		}
 		
 		times.elementAt(0).recebePeoes(pecasVerm);
@@ -314,15 +316,30 @@ public class Tabuleiro extends JPanel   {
 	
 	}
 	
-	static void DrawPino(Graphics2D g2d, int x, int y, Color cor) {
+	static void DrawPino(Graphics2D g2d, int x, int y, Color cor, boolean abr) {
 		
+	
 		int x1  = (x * 40) + 10;
 		int y1 = (y * 40) + 10;
-
+		int altura;
+		int largura;
+		
+		if (abr == true) {
+			
+			 altura = 15;
+			 largura = 15;
+			 x1 += 3;
+			 y1 += 3;
+		}
+		else {
+			 altura = 20;
+			 largura = 20;
+			
+		}
 		 g2d.setPaint(cor);
-		 g2d.fill(new Ellipse2D.Double(x1,y1, 20, 20));
+		 g2d.fill(new Ellipse2D.Double(x1,y1, altura, largura));
 	     g2d.setPaint(cor);
-	     g2d.draw(new Ellipse2D.Double(x1,y1, 20, 20));
+	     g2d.draw(new Ellipse2D.Double(x1,y1, altura, altura));
 
 	}
 	

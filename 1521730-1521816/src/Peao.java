@@ -14,12 +14,13 @@ public class Peao {
 	boolean abrigo = false;
 
 	
-	public Peao (Color cor, int x, int y, int i) { // Time x
+	public Peao (Color cor, int x, int y, int i, boolean abr) { // Time x
 		
 		corP = cor;
 		id = i;
 		CoordX = x;
 		CoordY = y;
+		abrigo = abr;
 	}
 	
 	public int getPositionX() {
