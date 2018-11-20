@@ -14,13 +14,25 @@ public @interface Importante {
 		Verde = [8][1]
 		Amarelo = [13][8]
 		Azul = [6][13]
+		
+	Posicoes que podem ter barreiras:
+		[0][6], [2][6], [3][6], [4][6], [5][6], [9][6], [10][6], [11][6], [12][6], [14][6]
+		
+		[0][7],[1][7],[2][7], [3][7], [4][7], [5][7], [9][7], [10][7], [11][7], [12][6], [13][6], [14][6]
+	
+		[0][8], [2][8], [3][8], [4][8], [5][8], [9][8], [10][8], [11][8], [12][8], [14][8]
+		
+		[6][0], [6][2], [6][3], [6][4], [6][5], [6][9],[6][10], [6][11], [6][12],[6][14]
+		
+		[7][0], [7][1], [7][2], [7][3], [7][4], [7][5], [7][9], [7][10], [7][11], [7][12], [7][13], [7][14]
+		 
+		[8][0], [8][2], [8][3], [8][4], [8][5], [8][9],[8][10], [8][11], [8][12],[8][14]  
+		
 	
 	
-	
-	
-	Jogador só escolherá a peca a ser movimentada caso não seja possível posicionar o peao na casa de saida
-	Caso jogador tire 6 e tiver uma barreira formada com seus peoes, ela deverá ser desfeita. Caso exista 2 barreiras, 
-	 é desfeita aquela mais perto da chegada.
+	Jogador sï¿½ escolherï¿½ a peca a ser movimentada caso nï¿½o seja possï¿½vel posicionar o peao na casa de saida
+	Caso jogador tire 6 e tiver uma barreira formada com seus peoes, ela deverï¿½ ser desfeita. Caso exista 2 barreiras, 
+	 ï¿½ desfeita aquela mais perto da chegada.
 	
 	
 	
@@ -29,8 +41,8 @@ public @interface Importante {
 	REGRAS E MOVIMENTACAO:
 	
 		FEITO:
-			- Jogada automática de quando se é retirado 5 no dado
-			- Não mudar o turno ao retirar 6 no dado
+			- Jogada automï¿½tica de quando se ï¿½ retirado 5 no dado
+			- Nï¿½o mudar o turno ao retirar 6 no dado
 			
 			
 		

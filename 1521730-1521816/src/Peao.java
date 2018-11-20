@@ -12,15 +12,19 @@ public class Peao {
 	int CoordY;
 	protected int qtdCasasAndadas = 0;
 	boolean abrigo = false;
+	boolean saida = false;
+	boolean barreira = false;
 
 	
-	public Peao (Color cor, int x, int y, int i, boolean abr) { // Time x
+	public Peao (Color cor, int x, int y, int i, boolean abr, boolean said, boolean barr) { // Time x
 		
 		corP = cor;
 		id = i;
 		CoordX = x;
 		CoordY = y;
 		abrigo = abr;
+		saida = said;
+		barreira = barr;
 	}
 	
 	public int getPositionX() {
