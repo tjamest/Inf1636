@@ -112,20 +112,16 @@ public class Tabuleiro extends JPanel   {
 	
 		for (int i = 0; i < 4 ; i ++) {	
 
-			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED, pecasVerm.elementAt(i).abrigo, 
-					pecasVerm.elementAt(i).saida, pecasVerm.elementAt(i).barreira);
+			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED, pecasVerm.elementAt(i).alteraTam);
 			Jogo.posicoes[pecasVerm.elementAt(i).CoordX][pecasVerm.elementAt(i).CoordY] = i;
 
-			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE, pecasAzul.elementAt(i).abrigo, 
-					pecasAzul.elementAt(i).saida, pecasAzul.elementAt(i).barreira);
+			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE, pecasAzul.elementAt(i).alteraTam);
 			Jogo.posicoes[pecasAzul.elementAt(i).CoordX][pecasAzul.elementAt(i).CoordY] = i;
 
-			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN, pecasVerde.elementAt(i).abrigo, 
-					pecasVerde.elementAt(i).saida, pecasVerde.elementAt(i).barreira);
+			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN, pecasVerde.elementAt(i).alteraTam);
 			Jogo.posicoes[pecasVerde.elementAt(i).CoordX][pecasVerde.elementAt(i).CoordY] = i;
 
-			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW, pecasAma.elementAt(i).abrigo, 
-					 pecasAma.elementAt(i).saida,  pecasAma.elementAt(i).barreira);	
+			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW, pecasAma.elementAt(i).alteraTam);	
 			Jogo.posicoes[pecasAma.elementAt(i).CoordX][pecasAma.elementAt(i).CoordY] = i;
 		}
 
@@ -176,10 +172,10 @@ public class Tabuleiro extends JPanel   {
 	private void iniciaVetorPecas() {
 		
 		for (int i = 0; i < 4 ; i ++){
-			pecasVerm.add(new Peao(Color.RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i, false,false, false));
-			pecasAzul.add(new Peao(Color.BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i, false,false, false));
-			pecasVerde.add(new Peao(Color.GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i, false,false, false));
-			pecasAma.add(new Peao(Color.YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i, false,false, false));
+			pecasVerm.add(new Peao(Color.RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i, false));
+			pecasAzul.add(new Peao(Color.BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i, false));
+			pecasVerde.add(new Peao(Color.GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i, false));
+			pecasAma.add(new Peao(Color.YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i, false));
 		}
 		
 		times.elementAt(0).recebePeoes(pecasVerm);
@@ -305,7 +301,7 @@ public class Tabuleiro extends JPanel   {
 	
 	}
 	
-	static void DrawPino(Graphics2D g2d, int x, int y, Color cor, boolean abr, boolean said, boolean barr) {
+	static void DrawPino(Graphics2D g2d, int x, int y, Color cor, boolean altera) {
 		
 	
 		int x1  = (x * 40) + 10;
@@ -313,7 +309,7 @@ public class Tabuleiro extends JPanel   {
 		int altura;
 		int largura;
 		
-		if (abr == true || said == true || barr == true) {
+		if (altera == true ) {
 			
 			 altura = 15;
 			 largura = 15;

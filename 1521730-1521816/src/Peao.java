@@ -11,20 +11,16 @@ public class Peao {
 	int CoordX;
 	int CoordY;
 	protected int qtdCasasAndadas = 0;
-	boolean abrigo = false;
-	boolean saida = false;
-	boolean barreira = false;
-
+	boolean alteraTam = false;
 	
-	public Peao (Color cor, int x, int y, int i, boolean abr, boolean said, boolean barr) { // Time x
+	
+	public Peao (Color cor, int x, int y, int i, boolean altera) { // Time x
 		
 		corP = cor;
 		id = i;
 		CoordX = x;
 		CoordY = y;
-		abrigo = abr;
-		saida = said;
-		barreira = barr;
+		alteraTam = altera;
 	}
 	
 	public int getPositionX() {

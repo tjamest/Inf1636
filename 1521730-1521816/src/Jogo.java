@@ -79,263 +79,18 @@ public class Jogo implements MouseListener {
 		
 		for (int i = 0 ; i<15; i++) {
 			for (int j = 0 ; j<15 ; j++) {
-				
 				System.out.printf("indice matriz eh [%d][%d] = %d \n" ,i, j , posicoes[i][j]);
-
-				
 			}
 		}
-		
-}
-	
-// Checa se movimento pode acontecer ou nao	
-	
-	public void confereMatrix(int x, int y) {
-	
-	if (posicoes[x][y] == -1) {
-		System.out.printf("Pode mover\n");
 	}
 	
-	else{
-		System.out.printf("Casa ocupada \n");
-	}		
-}
 
-	
-	
-	
 	
 	// ---- CASOS COM MAIS DE 1 PECA NO MESMO LUGAR ----
 	
-	
-	public int checaAbrigo(int x, int y, Peao peca) {
-		
-		int abr1 = 0;
-		int index = -1;
-		
-		//public static Peao[][] abrigo = new Peao[4][2];
-		//public static int [][]casasDeAbrigo = {{6,1},{13,6},{8,13},{1,8}};
-		
-		for(int i=0;i<4;i++) {
-			
-			System.out.printf(" --  CASAS ABRIGO [%d][%d]\n",casasDeAbrigo[i][0], casasDeAbrigo[i][1]);
-			System.out.printf(" -- X [%d] Y[%d]\n",x, y);
-			
-			
-			if(casasDeAbrigo[i][0] == x && casasDeAbrigo[i][1] == y) {
-				index = i;
-				break;
-			}
-			
-		}
-		
-		if(index != -1 ) {
-			
-			if (abrigo [index][0] == null && abr1 == 0) {
-				
-				abrigo [index][0] = peca;
-				abr1 ++;
-				System.out.printf("--- ABR1 = %d \n ", abr1);
-				
-				if (abrigo [index][1] != null)
-					return 2;
-				
-			}
-		
-			else {
-				abrigo [index][1] = peca;
-				abr1++;
-				System.out.printf("--- ABR1 = %d \n ", abr1);
-				if (abrigo [index][0] != null)
-					return 2;
-				
-			}
-		}
-		return 0;
-	}
-	
-	public void checa1PecaAbrigo(Peao peca) {
-		for (int i = 0; i<4; i++) {
-			
-			if (abrigo [i][0] == peca) {
-				
-				if (abrigo [i][1] != null) { // tem algo em cima da peca 1
-					
-					abrigo[i][1].abrigo = false;
-					abrigo[i][0] = null;
-				}
-			}
-			else if (abrigo [i][1] == peca) {
-					if (abrigo [i][0] != null) { // tirando 2 peca do vetor de abrigo
-						
-					abrigo[i][1] = null;
-				}
-			}
-			
-		}
-	}
-	
-	public void imprimeAbrigo () {
-		System.out.printf(" -- IMPRIME CASAS DE ABRIGO --\n");
-		
-		for(int i=0;i<4;i++) {
-			
-			if (abrigo[i][0] != null )
-				System.out.printf(" -- posicao 1: %s \n",abrigo[i][0].corP );
-			if ( abrigo[i][1] != null) 
-				System.out.printf(" -- posicao 2: %s \n",abrigo[i][1].corP);
-			
-
-		}
-	}
-	
-	//falta caso em que a segunda peca vem de uma jogada automatica!!
-	//falta checar se pelo menos 1 das pecas eh da cor da casa de saida
-	
-	public static int checaCasaDeSaida(int x, int y, Peao peca) {
-		
-		int sd = 0;
-		int index = -1;
-		
-		//public static Peao[][] saida = new Peao[4][2];
-		//public static int [][]casasDeAbrigo = {{6,1},{13,6},{8,13},{1,8}};
-		
-		for(int i=0;i<4;i++) {
-			
-			System.out.printf(" --  CASAS SAIDA [%d][%d]\n",casasDeSaida[i][0], casasDeSaida[i][1]);
-			System.out.printf(" -- X [%d] Y[%d]\n",x, y);
-			
-			
-			if(casasDeSaida[i][0] == x && casasDeSaida[i][1] == y) {
-				index = i;
-				break;
-			}
-			
-		}
-		if(index != -1 ) {
-			
-			if (saida [index][0] == null ) {
-				System.out.printf("-- ENTROU 01 \n");
-				saida [index][0] = peca;
-				sd ++;
-				System.out.printf("--- ABR1 = %d \n ", sd);
-				
-				if (saida [index][1] != null)
-					return 2;
-				
-			}
-		
-			else {
-				System.out.printf("-- ENTROU 02 \n");
-				saida[index][1] = peca;
-				sd++;
-				System.out.printf("--- ABR1 = %d \n ", sd);
-				if (saida [index][0] != null)
-					return 2;
-				
-			}
-		}
-	
-		
-		return 0;
-		
-	}
-	
-	public void checa1Saida(Peao peca) {
-		for (int i = 0; i<4; i++) {
-			
-			if (saida [i][0] == peca) {
-				
-				if (saida [i][1] != null) { // tem algo em cima da peca 1
-					
-					saida[i][1].saida = false;
-					saida[i][0] = null;
-				}
-			}
-			else if (saida[i][1] == peca) {
-					if (saida [i][0] != null) { // tirando 2 peca do vetor de abrigo
-						
-					saida[i][1] = null;
-				}
-			}
-			
-		}
-	}
 
 	
-	//falta caso em que uma das peÃ§as Ã© diferente da anterior
-	
-	public static int checaBarreira(int x, int y, Peao peca) {
-		
-		//public static Peao[][] barreira = new Peao[64][2];
-		
-		int sb = 0;
-		int index = -1;
-		
-		for (int i = 0; i<64; i++) {
-			
-			if (casasDeBarreira[i][0] == x && casasDeBarreira[i][1] == y ) {
-				
-				index = i;
-				break;
-			}
-			
-		}
-		if(index != -1 ) {
-			
-			if (barreira [index][0] == null ) {
-				System.out.printf("-- ENTROU 01 checa Barreira\n");
-				barreira [index][0] = peca;
-				sb ++;
-				if (barreira [index][1] != null && barreira[index][1].corP == barreira[index][0].corP)
-					return 2;
-				else if (barreira [index][1] != null && barreira[index][1].corP != barreira[index][0].corP) {
-					System.out.printf("-- Checa barreira, cor de baixo != da cor de cima\n");
-					System.out.printf("-- Caso Captura\n");
-					//peca que capturou pode andar 6
-					Peao capturada = barreira [index][1];
-					captura(x, y,peca , capturada);
-				}
-				
-			}
-		
-			else {
-				System.out.printf("-- ENTROU 02 checa Barreira\n");
-				barreira[index][1] = peca;
-				sb++;
-				if (barreira [index][0] != null && barreira[index][0].corP == barreira[index][1].corP)
-					return 2;
-				else if (barreira [index][0] != null && barreira[index][0].corP != barreira[index][1].corP) {
-					System.out.printf("-- Checa barreira, cor de cima != da cor de baixo\n");
-					System.out.printf("-- Caso Captura\n");
-					Peao capturada = barreira [index][0];
-					captura(x, y,peca , capturada);
-				}
-				
-			}
-		}
-
-		return 0;
-	}
-	
-	public void checa1Barreira(Peao peca) {
-		for (int i = 0; i<62; i++) {
-			if (barreira [i][0] == peca) {
-				if (barreira [i][1] != null) { // tem algo em cima da peca 1
-					barreira[i][1].barreira = false;
-					barreira[i][0] = null;
-				}
-			}
-			else if (barreira[i][1] == peca) {
-					if (barreira[i][0] != null) { // tirando 2 peca do vetor de abrigo
-						barreira[i][1] = null;
-				}
-			}
-		}
-	}
-	
-	
-	private static void captura(int x, int y, Peao peca, Peao capturada) {
+	private static void captura(Peao capturada) {
 		
 		if (capturada.corP == Color.RED ) 
 			Tabuleiro.movepeca(capturada, casasDeSaida[0][0], casasDeSaida[0][1], capturada.id,roll);
@@ -345,6 +100,182 @@ public class Jogo implements MouseListener {
 			Tabuleiro.movepeca(capturada, casasDeSaida[2][0], casasDeSaida[2][1], capturada.id,roll);
 		else if (capturada.corP == Color.BLUE) 
 			Tabuleiro.movepeca(capturada, casasDeSaida[3][0], casasDeSaida[3][1], capturada.id,roll);
+	}
+
+	public int checaSeAbrigo(int x, int y) {// checa se casa dada é ABRIGO
+		for(int i=0;i<4;i++) { 
+			System.out.printf(" --  CASAS ABRIGO [%d][%d]\n",casasDeAbrigo[i][0], casasDeAbrigo[i][1]);
+			System.out.printf(" -- X [%d] Y[%d]\n",x, y);
+			if(casasDeAbrigo[i][0] == x && casasDeAbrigo[i][1] == y) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	public int checaSeSaida(int x, int y) { // checa se é casa de SAIDA
+		for(int i=0;i<4;i++) {
+			System.out.printf(" --  CASAS SAIDA [%d][%d]\n",casasDeSaida[i][0], casasDeSaida[i][1]);
+			System.out.printf(" -- X [%d] Y[%d]\n",x, y);
+			if(casasDeSaida[i][0] == x && casasDeSaida[i][1] == y) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	public int checaSeBarreira(int x, int y) {// checa se é BARREIRA
+		for (int i = 0; i<64; i++) { 
+			if (casasDeBarreira[i][0] == x && casasDeBarreira[i][1] == y ) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	
+	
+	
+	
+
+	public int checkMovimentAndUpdate(int x, int y, Peao peca) { // retorna o tipo da casa 1-abr 2-sai 3-barr 0- podemover
+		
+		int index2Click = -1, index1Click = -1, retornar =-1;
+		
+		index2Click = checaSeAbrigo(x, y);
+		
+		
+		if (index2Click != -1) {
+			//checando se tem 2peoes na casa
+			if (abrigo[index2Click][0] != null && abrigo[index2Click][1] != null) {
+				System.out.printf("Já tem duas pecas no vetor de abrigos com esse index \n");
+				System.out.printf("Não pode mover \n");
+				retornar = 1;
+			}else {
+				if (abrigo [index2Click][0] == null) {
+					abrigo [index2Click][0] = peca;
+					peca.alteraTam = false;
+					retornar =  0;
+				}
+			
+				else {
+					if(abrigo [index2Click][1] == null){
+						abrigo [index2Click][1] = peca;
+						peca.alteraTam = true;
+						retornar = 0;
+						//pode se peca da mesma cor?
+					
+					}
+				}
+			}
+			if (retornar != 0)
+				return retornar;
+			else {
+				index1Click = checaSeAbrigo(peca.CoordX,  peca.CoordY);
+				if(index1Click != -1) {
+					if (abrigo[index1Click][0] == peca) {
+						abrigo[index1Click][0] = abrigo[index1Click][1];
+						abrigo[index1Click][1] = null;
+						abrigo[index1Click][0].alteraTam = false;
+					}
+					else {
+						abrigo[index1Click][1] = null;
+					}
+				}
+			}
+		}
+		
+		else {
+			index2Click =  checaSeSaida(x,  y);
+			
+			if(index2Click != -1) {
+				//checando se tem 2peoes na casa
+				if (saida[index2Click][0] != null && saida[index2Click][1] != null) {
+					System.out.printf("Já tem duas pecas no vetor de casas de saida com esse index \n");
+					System.out.printf("Não pode mover \n");
+					retornar = 2;
+				}else {
+					//FALTA: pelo menos 1 das pecas tem que ser da cor da casa de saida
+					if (saida [index2Click][0] == null ) {
+						saida [index2Click][0] = peca;
+						peca.alteraTam = false;
+						retornar = 0;
+					}
+				
+					else if(saida [index2Click][1] == null){
+						saida[index2Click][1] = peca;
+						peca.alteraTam = true;
+						retornar = 0;
+					}
+				}
+				if (retornar != 0)
+					return retornar;
+				else {
+					index1Click = checaSeSaida(peca.CoordX,  peca.CoordY);
+					if(index1Click != -1) {
+						if (saida[index1Click][0] == peca) {
+							saida[index1Click][0] = saida[index1Click][1];
+							saida[index1Click][1] = null;
+							saida[index1Click][0].alteraTam = false;
+						}
+						else {
+							saida[index1Click][1] = null;
+						}
+					}
+				}
+				
+			}
+			
+			else {
+				index2Click =  checaSeBarreira(x,  y);
+				if(index2Click != -1) {
+					//checando se tem 2peoes na casa
+					if (barreira[index2Click][0] != null && barreira[index2Click][1] != null) {
+						System.out.printf("Já tem duas pecas no vetor de casas de barreira com esse index \n");
+						System.out.printf("Não pode mover \n");
+						retornar = 3;
+					}else {
+						if (barreira [index2Click][0] == null ) {
+							barreira [index2Click][0] = peca;
+							peca.alteraTam = false;
+							retornar = 0;
+						}
+					
+						else if(barreira [index2Click][1] == null){
+							if(barreira[index2Click][0].corP != peca.corP){
+								System.out.printf("-- Checa barreira, cor de cima != da cor de baixo\n");
+								System.out.printf("-- Caso Captura\n");
+								captura(barreira [index2Click][0]);
+								barreira[index2Click][0] = peca;
+								peca.alteraTam = false;
+								retornar = 0;
+							}else{
+								barreira[index2Click][1] = peca;
+								peca.alteraTam = true;
+								retornar = 0;
+							}
+						}
+					}
+					if (retornar != 0)
+						return retornar;
+					else {
+						index1Click = checaSeBarreira(peca.CoordX,  peca.CoordY);
+						if(index1Click != -1) {
+							if (barreira[index1Click][0] == peca) {
+								barreira[index1Click][0] = barreira[index1Click][1];
+								barreira[index1Click][1] = null;
+								barreira[index1Click][0].alteraTam = false;
+							}
+							else {
+								barreira[index1Click][1] = null;
+							}
+						}
+					}
+					
+					
+				}
+			}
+		}
+		return 0;
 	}
 	
 	
@@ -378,72 +309,47 @@ public class Jogo implements MouseListener {
 
 	}
 	
-	
 	public void segundoClick (int x, int y, int id) {
 		
-		int cA, cS, cB;
+		boolean segunda = false;
 		Time time = Tabuleiro.times.elementAt(id);
 		
 		System.out.printf(" Classe JOGO - movendo para [%d][%d]\n",x, y);
 		
 		
 		time.ultimoPinoMovimentado = time.peoes.elementAt(ind);
+		
+		int mov = checkMovimentAndUpdate(x,  y, time.ultimoPinoMovimentado);
 
+		System.out.printf(" ---- MOV = %d  \n",mov);
 		
-		cA = checaAbrigo(x,y, time.ultimoPinoMovimentado);
 		
-		System.out.printf("-- AUX CHECA ABRIGO = %d \n", cA);
 		
-		if (cA == 2) { // segundo pino na casa de abrigo
-			//ehAbrigo = true;
-			time.peoes.elementAt(ind).abrigo = true;
-		}
-		
-		else if (cA == 0 && time.peoes.elementAt(ind).abrigo == true) {
-			//ehAbrigo = false;
-			time.peoes.elementAt(ind).abrigo = false;
-			checa1PecaAbrigo(time.ultimoPinoMovimentado);
-		}
-		else //if (aux == 1)
-			checa1PecaAbrigo(time.ultimoPinoMovimentado);
-		
-		cS = checaCasaDeSaida(x,  y, time.peoes.elementAt(ind)); //0 ou 2
-		
-		System.out.printf("-- AUX CHECA CASA DE SAIDA = %d \n", cA);
-		
-		if (cS == 2) {
-			time.peoes.elementAt(ind).saida = true;
-		}
-		else if (cS == 0 && time.peoes.elementAt(ind).saida == true) { // movimenta peca de cima, muda tamanho
-			time.peoes.elementAt(ind).saida = false;
-			checa1Saida(time.ultimoPinoMovimentado);
-		}
-		else 
-			checa1Saida(time.ultimoPinoMovimentado);
-		
-		cB = checaBarreira(x,  y, time.peoes.elementAt(ind));
-		if (cB == 2) { // segundo pino na casa de barreira
+		if(mov == 0) {
+			//faz movimento
 			
-			time.peoes.elementAt(ind).barreira = true;
-		}
-		else if (cA == 0 && time.peoes.elementAt(ind).barreira == true) {
-			
-			time.peoes.elementAt(ind).barreira= false;
-			checa1Barreira(time.ultimoPinoMovimentado);
-		}
-		else 
-			checa1Barreira(time.ultimoPinoMovimentado);
-		
-		
-		
-		//----------------------- 
-		
-		imprimeAbrigo();
+			System.out.printf(" ---- PEAO %d EH ABRIGO = %s  \n",ind
+					,Tabuleiro.times.elementAt(id).peoes.elementAt(ind).alteraTam);
 
-		System.out.printf(" ---- PEAO %d EH ABRIGO = %s  \n",ind
-				,Tabuleiro.times.elementAt(id).peoes.elementAt(ind).abrigo);
+
+			movimento(Tabuleiro.times.elementAt(id).peoes.elementAt(ind), x, y, roll);
+
+		}
+		else {
+			if (mov == 1) {
+				//caso cancelar movimento abrigo
+			}
+			else if (mov == 2) {
+				//caso cancelar movimento saida
+			}
+			else if (mov == 3) {
+				//caso cancelar movimento barreira
+			}
+			else 
+				System.out.printf("Deu rum carai \n");
+		}
 		
-		movimento(Tabuleiro.times.elementAt(id).peoes.elementAt(ind), x, y, roll);
+		
 	
 		
 		System.out.printf("-- Classe Jogo - ultimo peao movimentado tem indice %d\n", Tabuleiro.times.elementAt(id).peoes.elementAt(ind).id);
@@ -613,12 +519,13 @@ public class Jogo implements MouseListener {
 		
 		if (indice != -1) {
 			
-			int aux2 = checaCasaDeSaida(x,  y, aux.elementAt(indice)); //0 ou 2
-			if (aux2 == 2) {
-				aux.elementAt(indice).saida = true;
-			}
-	
-			Tabuleiro.movepeca(aux.elementAt(indice), x, y, indice, roll);
+			//int aux2 = checaCasaDeSaida(x,  y, aux.elementAt(indice)); //0 ou 2
+			// if (aux2 == 2) {
+			// 	aux.elementAt(indice).saida = true;
+			// }
+			//if(checaCasaDeSaida(...)){
+				Tabuleiro.movepeca(aux.elementAt(indice), x, y, indice, roll);
+			//}
 			return 0;
 		}
 		if (indice == -1 )
