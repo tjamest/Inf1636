@@ -92,7 +92,7 @@ public class Jogo implements MouseListener {
 	// ---- CASOS COM MAIS DE 1 PECA NO MESMO LUGAR ----
 	
 
-	
+	/*OBS:.THIAGO MUDAR BUG AONDE PEÇA COME OUTRA SO QUE VOLTA PARA CASA DE SAIDA NÃO CASA DE INICIO*/
 	private static void captura(Peao capturada) {
 		
 		capturada.qtdCasasAndadas = 0;
@@ -603,7 +603,7 @@ public class Jogo implements MouseListener {
 	    return roll;
 	}
 	
-	
+	/*OBS THIAGO :. MUDAR O CASO3SEIS AONDE ELE VOLTA PARA A CASA DE SAIDA NÃO CASA DE INICIO*/
 	
 	public static void caso3Seis(int i) {
 		Tabuleiro.movepeao(Tabuleiro.times.elementAt(i).ultimoPinoMovimentado, casasDeSaida[i][0], casasDeSaida[i][1]);
