@@ -12,7 +12,8 @@ public class Tabuleiro extends JPanel   {
 	int resp = 0;
 	static Graphics2D g2d;
 	static int roll = 0;
-	Color fundo;
+	static Color fundo;
+
 
 	private static final long serialVersionUID = -4264416327199530488L;
 	
@@ -21,18 +22,22 @@ public class Tabuleiro extends JPanel   {
 	public static  Color DARK_GREEN = new Color(0, 204, 0);
 	public static  Color DARK_RED = new Color(204, 0, 0);
 	
+	//Lista Times
+	static Vector<Time> times = new Vector<Time>();
+	
 	//vetor de pecas
 	static  Vector<Peao> pecasVerm = new Vector<Peao>();
 	static Vector<Peao> pecasAzul = new Vector<Peao>();
 	static Vector<Peao> pecasVerde = new Vector<Peao>();
 	static Vector<Peao> pecasAma = new Vector<Peao>();
 	
+	public static Peao[][] trueAltera = new Peao[4][1];
 	
-	//posicoes iniciais pino (vetor com posicoes de desenho do pino no inicio do jogo)
-	static int[][] pinoIniVerm = {{50, 50}, {170, 50}, {50, 170}, {170, 170}};
-	static int[][] pinoIniAzul = {{50, 410}, {170, 410}, {50, 530}, {170, 530}};
-	static int[][] pinoIniVerde = {{410, 50}, {530, 50}, {410, 170}, {530, 170}};
-	static int[][] pinoIniAmar = {{410, 410}, {530, 410}, {410, 530}, {530, 530}};
+	//posicoes iniciais dos peos do jogo
+	static int[][] pinoIniVerm = {{1, 1}, {1,4}, {4, 1}, {4,4}};
+	static int[][] pinoIniVerde = {{10, 1}, {13,1}, {10, 4}, {13,4}};
+	static int[][] pinoIniAmar = {{10, 10}, {13,10}, {10, 13}, {13,13}};
+	static int[][] pinoIniAzul = {{1, 10}, {1,13}, {4, 10}, {4,13}};
 	
 	//posicoes elipses (vetor com posicoes do desenho das elipses bancas)
 	static int[][] elipsesVerm = {{40, 40}, {160, 40}, {40, 160}, {160, 160}};
@@ -66,15 +71,13 @@ public class Tabuleiro extends JPanel   {
         
         Menu.b4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+		
+				int x = (int)(Math.random()*6+1);
+				Jogo.numeroDado(x);
+				roll = x;
 				
-				roll = Jogo.numeroDado();
-			    dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();
-			    fundo = Jogo.corEquipedaVez;
-			    if (roll != 6 && Jogo.tirou6 == 0 )
-			    	Jogo.trocaTurno();
-			    else if (Jogo.tirou6 == 3)
-			    	Jogo.trocaTurno();
-			    
+				//roll = Jogo.numeroDado();
+			    dado = new ImageIcon(this.getClass().getResource(images[roll-1])).getImage();  
 			}
 		});
         
@@ -91,66 +94,129 @@ public class Tabuleiro extends JPanel   {
     	DrawBoard(g2d);
     	DrawRectangle(g2d);
     	DrawQuadradosColoridos(g2d);
+    	ModoDebug(g2d);
  
     	if (Jogo.newgame == true) {
     		
+    		iniciaTimes();
     		iniciaVetorPecas();
     		desenhaPinos();
+    		
+    		
     		repaint();
     	}
+    	//Jogo.printMatrizPosicoes();
 
-	}
-
-
-	private static void desenhaPinos() {
-		for (int i = 0; i < 4 ; i ++) {	
-			
-			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED);
-			Jogo.posicoes[(int) Math.ceil(pecasVerm.elementAt(i).CoordX/40)][(int) Math.ceil(pecasVerm.elementAt(i).CoordY/40)] = i;
-			
-			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE);
-			Jogo.posicoes[(int) Math.ceil(pecasAzul.elementAt(i).CoordX/40)][(int) Math.ceil(pecasAzul.elementAt(i).CoordY/40)] = i;
-			
-			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN);
-			Jogo.posicoes[(int) Math.ceil(pecasVerde.elementAt(i).CoordX/40)][(int) Math.ceil(pecasVerde.elementAt(i).CoordY/40)] = i;
-			
-			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW);	
-			Jogo.posicoes[(int) Math.ceil(pecasAma.elementAt(i).CoordY/40)][(int) Math.ceil(pecasAma.elementAt(i).CoordY/40)] = i;
-		}
-		
-		
 	}
 	
-	public static void movepeca(Vector<Peao> peca, int x, int y, int index, int dado) {
+	//public static Peao[][] trueAltera = new Peao[4][1];
+
+	private static void desenhaPinos() {
 		
-		int oldX = (int) Math.ceil(peca.elementAt(index).CoordX/40);
-		int oldY = (int) Math.ceil(peca.elementAt(index).CoordY/40);
+	
+		for (int i = 0; i < 4 ; i ++) {	
+
+			DrawPino(g2d, pecasVerm.elementAt(i).CoordX,  pecasVerm.elementAt(i).CoordY, Color.RED, pecasVerm.elementAt(i).alteraTam);
+			Jogo.posicoes[pecasVerm.elementAt(i).CoordX][pecasVerm.elementAt(i).CoordY] = i;
+			
+			DrawPino(g2d, pecasAzul.elementAt(i).CoordX,  pecasAzul.elementAt(i).CoordY, Color.BLUE, pecasAzul.elementAt(i).alteraTam);
+			Jogo.posicoes[pecasAzul.elementAt(i).CoordX][pecasAzul.elementAt(i).CoordY] = i;
+
+			DrawPino(g2d, pecasVerde.elementAt(i).CoordX,  pecasVerde.elementAt(i).CoordY, Color.GREEN, pecasVerde.elementAt(i).alteraTam);
+			Jogo.posicoes[pecasVerde.elementAt(i).CoordX][pecasVerde.elementAt(i).CoordY] = i;
+
+			DrawPino(g2d, pecasAma.elementAt(i).CoordX,  pecasAma.elementAt(i).CoordY, Color.YELLOW, pecasAma.elementAt(i).alteraTam);	
+			Jogo.posicoes[pecasAma.elementAt(i).CoordX][pecasAma.elementAt(i).CoordY] = i;
+			
+			
+			if (pecasVerm.elementAt(i).alteraTam == true) {
+				trueAltera[i][0] = pecasVerm.elementAt(i);
+			}
+			else if (pecasAzul.elementAt(i).alteraTam == true) {
+				trueAltera[i][0] = pecasAzul.elementAt(i);
+			}
+			else if (pecasVerde.elementAt(i).alteraTam == true) {
+				trueAltera[i][0] = pecasVerde.elementAt(i);
+			}
+			else if (pecasAma.elementAt(i).alteraTam == true) {
+				trueAltera[i][0] = pecasAma.elementAt(i);
+			}
+		}
+		//testar caso vermelho em cima de azul
+		//testar caso azul em cima de verde
+		//testar caso verde em cima de amarelo
+		//testar caso amarelo em cima de vermelho
 		
-		peca.elementAt(index).CoordX = (x * 40) + 10;
-		peca.elementAt(index).CoordY = (y * 40) + 10;
+		for (int i = 0; i < 4 ; i ++) {	
+			if (trueAltera[i][0]!= null) {
+				
+				DrawPino(g2d, trueAltera[i][0].CoordX,  trueAltera[i][0].CoordY, trueAltera[i][0].corP, trueAltera[i][0].alteraTam);
+				trueAltera[i][0] = null;
+				
+			}
+		}
+	}
+	
+	public static void movepeca(Peao peca , int x, int y, int index, int dado) {
+		
+		int oldX = peca.CoordX;
+		int oldY = peca.CoordY;
+		
+		peca.CoordX = x;
+		peca.CoordY = y;
+		
+
+		Jogo.posicoes[oldX][oldY] = -1;
+		
+		desenhaPinos();
+
+	}
+	
+	public static void movepeao(Peao peca, int x, int y) {
+
+		
+		int oldX = peca.CoordX;
+		int oldY = peca.CoordY;
+		
+		peca.CoordX = x;
+		peca.CoordY = y;
 
 		Jogo.posicoes[oldX][oldY] = -1;
 
 		desenhaPinos();
 		
-		//Jogo.printConfereMovimento();
-		
-		
-	
 	}
 	
-
 	private void iniciaVetorPecas() {
 		
 		for (int i = 0; i < 4 ; i ++){
-			pecasVerm.add(new Peao(Color.RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i));
-			pecasAzul.add(new Peao(Color.BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i));
-			pecasVerde.add(new Peao(Color.GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i));
-			pecasAma.add(new Peao(Color.YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i));
+			pecasVerm.add(new Peao(Color.RED, pinoIniVerm [i][0], pinoIniVerm [i][1], i, false));
+			pecasAzul.add(new Peao(Color.BLUE, pinoIniAzul [i][0], pinoIniAzul [i][1], i, false));
+			pecasVerde.add(new Peao(Color.GREEN,  pinoIniVerde [i][0],  pinoIniVerde [i][1], i, false));
+			pecasAma.add(new Peao(Color.YELLOW,  pinoIniAmar [i][0],  pinoIniAmar [i][1], i, false));
+			trueAltera[i][0] = null;
 		}
+		
+		times.elementAt(0).recebePeoes(pecasVerm);
+		times.elementAt(1).recebePeoes(pecasVerde);
+		times.elementAt(2).recebePeoes(pecasAma);
+		times.elementAt(3).recebePeoes(pecasAzul);
 	}
+	
+	private void iniciaTimes() {
+		
+		Time equipeVermelho = new Time(Color.RED);
+		Time equipeVerde = new Time(Color.GREEN);
+		Time equipeAmarelo = new Time(Color.YELLOW);
+		Time equipeAzul = new Time(Color.BLUE);
 
+		times.add(equipeVermelho);
+		times.add(equipeVerde);
+		times.add(equipeAmarelo);
+		times.add(equipeAzul);
+		
 
+	}
 	
 	private void DrawBoard(Graphics2D g2d) {
 		
@@ -254,21 +320,37 @@ public class Tabuleiro extends JPanel   {
 	
 	}
 	
-	static void DrawPino(Graphics2D g2d, int x, int y, Color cor) {
+	static void DrawPino(Graphics2D g2d, int x, int y, Color cor, boolean altera) {
+		
+	
+		int x1  = (x * 40) + 10;
+		int y1 = (y * 40) + 10;
+		int altura;
+		int largura;
+		
+		if (altera == true ) {
+			 altura = 15;
+			 largura = 15;
+			 x1 += 3;
+			 y1 += 3;
+		}
+		else {
+			 altura = 20;
+			 largura = 20;
+		}
 		
 		
-
 		 g2d.setPaint(cor);
-		 g2d.fill(new Ellipse2D.Double(x,y, 20, 20));
-	     g2d.setPaint(cor);
-	     g2d.draw(new Ellipse2D.Double(x,y, 20, 20));
+		 g2d.fill(new Ellipse2D.Double(x1,y1, altura, largura));
+	     g2d.setPaint(Color.black);
+	     g2d.draw(new Ellipse2D.Double(x1,y1, altura, altura));
 
 	}
 	
 	static void DrawQuadrado(Graphics2D g2d, int x, int y, Color cor) {
 		
 		g2d.setColor(cor);
-		//g2d.fillRect(x, y, 240, 240);
+		g2d.fillRect(x, y, 240, 240);
 		g2d.setPaint(Color.BLACK);
 		g2d.drawRect(x, y, 240, 240);
 		
@@ -322,9 +404,95 @@ public class Tabuleiro extends JPanel   {
 		
 	}
 	
-
-
 	
+	public static void fimJogo(String x) {
+		JFrame frame = new JFrame("JOptionPane showMessageDialog Colocacoes");
+	    JOptionPane.showMessageDialog(frame,x);
+	    
+	    //resetar jogo;
 
+	}
+	
+	
+	
+	
+	private void ModoDebug(Graphics2D g2d) {
+		
+		g2d.setColor(Jogo.corEquipedaVez);
+		g2d.fillRect(620, 585, 145, 10);
+		
+		JButton dado1 = new JButton("1");
+		JButton dado2 = new JButton("2");
+		JButton dado3 = new JButton("3");
+		JButton dado4 = new JButton("4");
+		JButton dado5 = new JButton("5");
+		JButton dado6 = new JButton("6");
+		
+		
+		//Definindo posicoes
+		
+		dado1.setBounds(620,470,45,45);
+		this.add(dado1);
+		dado2.setBounds(670,470,45,45);
+		this.add(dado2);
+		dado3.setBounds(720,470,45,45);
+		this.add(dado3);
+		dado4.setBounds(620,530,45,45);
+		this.add(dado4);
+		dado5.setBounds(670,530,45,45);
+		this.add(dado5);
+		dado6.setBounds(720,530,45,45);
+		this.add(dado6);
+		
+		//Listeners
+		dado1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					Jogo.numeroDado(1);
+					
+				}
+			});
+		
+		dado2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(2);
+				
+			}
+		});
+		
+		dado3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(3);
+				
+			}
+		});
+		
+		dado4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(4);
+				
+			}
+		});
+		
+		dado5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(5);
+				
+			}
+		});
+		
+		dado6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Jogo.numeroDado(6);
+				
+			}
+		});
+
+	}
 
 }

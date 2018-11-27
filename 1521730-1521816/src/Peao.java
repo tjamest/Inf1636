@@ -6,20 +6,21 @@ public class Peao {
 	//Time time 
 	//Cor cor
 	
-	Color time;
+	Color corP;
 	int id;
 	int CoordX;
 	int CoordY;
-
+	protected int qtdCasasAndadas = 0;
+	boolean alteraTam = false;
 	
-	public Peao (Color cor, int x, int y, int i) { // Time x
+	
+	public Peao (Color cor, int x, int y, int i, boolean altera) { // Time x
 		
-		//cor = cor;
-		//time = x;
-		time = cor;
+		corP = cor;
 		id = i;
 		CoordX = x;
 		CoordY = y;
+		alteraTam = altera;
 	}
 	
 	public int getPositionX() {
@@ -32,9 +33,5 @@ public class Peao {
 		return CoordY;
 	}
 	
-	public Color getTime() {
-		
-		return time;
-	}
-
+	
 }
